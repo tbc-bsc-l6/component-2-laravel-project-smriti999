@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Course;
 
 class HomeController extends Controller
 {
-    // This method must exist
     public function index()
     {
-        return view('home'); // loads resources/views/home.blade.php
+        // Fetch all courses
+        $courses = Course::all();
+
+        // Pass courses to the view
+        return view('home', compact('courses'));
     }
 }

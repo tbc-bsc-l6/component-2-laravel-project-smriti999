@@ -27,7 +27,7 @@
                         </div>
                     </td>
                 </tr>
-                </br> </br> </br> </br> </br> </br>
+                
 
                 <!-- Email & Phone -->
                 <tr>
@@ -92,45 +92,27 @@
   <!--       CONTACT CARDS           -->
   <!-- ============================= -->
   <section class="contact-section">
-    <div class="contact-grid">
-
-      <div class="contact-card">
-        <h3>IT Assistance & Support</h3>
-        <p><span class="icon">📞</span> 9805687511</p>
-        <p><span class="icon">⏰</span> 6:30 AM - 6:00 PM</p>
-      </div>
-
       <div class="contact-card">
         <h3>Accounts</h3>
-        <p><span class="icon">✉️</span> accounts@thebritishcollege.edu.np</p>
-        <p><span class="icon">📞</span> 9704541903</p>
-        <p><span class="icon">⏰</span> 9:30 AM - 5:00 PM</p>
+        <p><span class="icon">✉️</span> accounts@theroseschool.edu.np</p>
+        <p><span class="icon">📞</span> 9876543210</p>
+        <p><span class="icon">⏰</span> 10:30 AM - 3:00 PM</p>
       </div>
 
       <div class="contact-card">
         <h3>Admissions</h3>
-        <p><span class="icon">✉️</span> admissions@thebritishcollege.edu.np</p>
-        <p><span class="icon">📞</span> 9802343228</p>
-        <p><span class="icon">⏰</span> 9:30 AM - 5:00 PM</p>
-      </div>
-
-      <div class="contact-card">
-        <h3>A Levels</h3>
-        <p><span class="icon">📞</span> 9801134338</p>
-      </div>
-
-      <div class="contact-card">
-        <h3>PTE</h3>
-        <p><span class="icon">📞</span> 9803466327</p>
+        <p><span class="icon">✉️</span> admissions@theroseschool.edu.np</p>
+        <p><span class="icon">📞</span> 9784563210</p>
+        <p><span class="icon">⏰</span> 10:00 AM - 3:00 PM</p>
       </div>
 
       <div class="contact-card">
         <h3>Student Service</h3>
-        <p><span class="icon">✉️</span> ssd@thebritishcollege.edu.np</p>
-        <p><span class="icon">📞</span> 9823046328</p>
-        <p><span class="icon">📞</span> 9823041013</p>
-        <p><span class="icon">📞</span> 9801314205</p>
-        <p><span class="icon">⏰</span> 9:30 AM - 5:00 PM</p>
+        <p><span class="icon">✉️</span> ssd@theroseschool.edu.np</p>
+        <p><span class="icon">📞</span> 9826235452</p>
+        <p><span class="icon">📞</span> 9823458565</p>
+        <p><span class="icon">📞</span> 9802135696</p>
+        <p><span class="icon">⏰</span> 9:30 AM - 4:30 PM</p>
       </div>
 
     </div>
@@ -157,53 +139,49 @@
 
         <!-- FINANCE -->
         <tr class="section-header"><td colspan="3">FINANCE</td></tr>
-        <tr><td>Rajan Kumar Adhikari</td><td>Deputy Finance Manager</td><td>9700867743</td></tr>
-        <tr><td>Ambika Kafle</td><td>Group Finance Head</td><td>9804848858</td></tr>
-        <tr><td>Bindu Dhungel</td><td>Accounts Officer</td><td>9745678633</td></tr>
+        <tr><td>Ram Raj Thapa</td><td>Deputy Finance Manager</td><td>9749678900</td></tr>
+        <tr><td>Pramish Kafle</td><td>Group Finance Head</td><td>9804803050</td></tr>
+        <tr><td>Prem Dhungel</td><td>Accounts Officer</td><td>9745781111</td></tr>
 
         <!-- IT -->
         <tr class="section-header"><td colspan="3">IT</td></tr>
-        <tr><td>Saroj Sharma</td><td>Programme Leader</td><td>9700867736</td></tr>
-        <tr><td>Jyoti Gautam Pant</td><td>Programme Leader</td><td></td></tr>
-        <tr><td>Rohit Raj Pandey</td><td>Head of Subject</td><td>9804047752</td></tr>
+        <tr><td>Shyam KC</td><td>Programme Leader</td><td>9700112233</td></tr>
+        <tr><td>Rani Pandey</td><td>Programme Leader</td><td>9823547609</td></tr>
+        <tr><td>Raju Thakur</td><td>Head of Subject</td><td>9818769955</td></tr>
 
         <!-- Business -->
         <tr class="section-header"><td colspan="3">Business</td></tr>
-        <tr><td>Gokul Bista</td><td>Programme Leader</td><td>9849812377</td></tr>
-        <tr><td>Rahul Poude</td><td>Associate Programme Leader</td><td>9845468847</td></tr>
+        <tr><td>Sita Tamang</td><td>Programme Leader</td><td>9824567890</td></tr>
+        <tr><td>Sushanti Gole</td><td>Associate Programme Leader</td><td>9714356802</td></tr>
 
         <!-- Marketing -->
         <tr class="section-header"><td colspan="3">Marketing</td></tr>
-        <tr><td>Anushree Mashal</td><td>AGO (Admissions & Marketing)</td><td>9801962012</td></tr>
-        <tr><td>Anil Ojha</td><td>Asst. Marketing Manager</td><td>9801962012</td></tr>
+        <tr><td>Aynnya Mojha</td><td>Asst. Marketing Manager</td><td>9801234567</td></tr>
+        <tr><td>Anuj Jha</td><td>Head Marketing Manager</td><td>9802345678</td></tr>
 
         <!-- Admissions -->
         <tr class="section-header"><td colspan="3">Admissions</td></tr>
-        <tr><td>Dhiraj Pradhan Rai</td><td>Head of Admissions and Outreach</td><td>9842058640</td></tr>
-        <tr><td>Babita Paudel</td><td>Admissions Supervisor</td><td>9851804710</td></tr>
-        <tr><td>Sumit Bhandana</td><td>Senior Incharge</td><td>9802343238</td></tr>
-        <tr><td>Nancy Rajbhandari</td><td>Admissions Counsellor</td><td>9849234095</td></tr>
+        <tr><td>Bikash Sharma</td><td>Head of Admissions</td><td>9836245696</td></tr>
+        <tr><td>nirmal Shah</td><td>Admissions Supervisor</td><td>9825459685</td></tr>
+        <tr><td>Bimala Gole</td><td>Senior Incharge</td><td>9803254569</td></tr>
+        <tr><td>Tyla Limbu</td><td>Admissions Counsellor</td><td>9849458525</td></tr>
 
         <!-- SEO -->
         <tr class="section-header"><td colspan="3">SEO</td></tr>
-        <tr><td>Krishna Shrestha</td><td>SEO Manager</td><td>9801534206</td></tr>
-        <tr><td>Diya Kandel</td><td>SEO Officer</td><td>9801534206</td></tr>
+        <tr><td>Pramila Shrestha</td><td>SEO Manager</td><td>9802345678</td></tr>
+        <tr><td>Guru Dev</td><td>SEO Officer</td><td>9809876543</td></tr>
 
-        <!-- BPC/ACCA -->
-        <tr class="section-header"><td colspan="3">BPC/ACCA</td></tr>
-        <tr><td>Dipendra Shrestha</td><td></td><td>9801544383, 9851808018</td></tr>
+        <!-- Butwal IT -->
+        <tr class="section-header"><td colspan="3">Butwal Unit, IT</td></tr>
+        <tr><td>Paarson Sharma</td><td>Head of College</td><td>+01 3333333</td></tr>
 
-        <!-- Pokhara A Levels -->
-        <tr class="section-header"><td colspan="3">Pokhara Unit, A Levels</td></tr>
-        <tr><td>Purbasaa Dhakal</td><td></td><td>9700866824, 9851047159</td></tr>
+        <!-- Kavre IT -->
+        <tr class="section-header"><td colspan="3">Kavre Unit, IT</td></tr>
+        <tr><td>Don Chaudary</td><td>Head of College</td><td>+01 2222222</td></tr>
 
-        <!-- Pokhara ACCA -->
-        <tr class="section-header"><td colspan="3">Pokhara Unit, ACCA</td></tr>
-        <tr><td>Pokhara Unit, ACCA</td><td></td><td>9851858440</td></tr>
-
-        <!-- BMC/A Levels -->
-        <tr class="section-header"><td colspan="3">BMC / A Levels</td></tr>
-        <tr><td>Rajan Kumar Rai</td><td>Head of School, BEG</td><td>9821443243, 9851856550</td></tr>
+        <!-- Jhapa -->
+        <tr class="section-header"><td colspan="3">Jhapa Unit, IT</td></tr>
+        <tr><td>Laxman Magar</td><td>Head of College</td><td>+01 7777777</td></tr>
 
       </tbody>
     </table>

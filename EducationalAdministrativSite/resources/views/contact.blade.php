@@ -50,11 +50,11 @@
                         <div class="form-group">
                             <select id="course" name="course" required>
                                 <option value="">Select Course</option>
-                                <option value="web-development">Web Development</option>
-                                <option value="data-science">Data Science</option>
-                                <option value="mobile-development">Mobile Development</option>
-                                <option value="ui-ux-design">UI/UX Design</option>
-                                <option value="digital-marketing">Digital Marketing</option>
+                                <option value="Finance">Finance</option>
+                                <option value="it">IT</option>
+                                <option value="business">Business</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="art">Art</option>
                             </select>
                         </div>
                     </td>

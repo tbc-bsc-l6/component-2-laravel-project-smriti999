@@ -6,9 +6,6 @@ use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Route;
 
 // Homepage
-
-
-
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Courses
 Route::view('/courses', 'courses')->name('courses');

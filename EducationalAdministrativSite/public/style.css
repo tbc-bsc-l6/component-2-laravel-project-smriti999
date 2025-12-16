@@ -102,7 +102,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 40px;
+    gap:40px;
 }
 
 .footer-column {
@@ -136,38 +136,6 @@ body {
     text-decoration: underline;
 }
 
-/* Newsletter */
-.newsletter {
-    background: rgba(255, 255, 255, 0.10);
-    padding: 20px;
-    margin-top: 35px;
-    border-radius: 6px;
-    text-align: center;
-}
-
-.newsletter input[type="email"] {
-    padding: 10px;
-    width: 30%;
-    border: none;
-    border-radius: 4px;
-    margin-right: 8px;
-}
-
-.newsletter button {
-    padding: 10px 18px;
-    border: none;
-    background: #61b47b;
-    color: #177417;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.newsletter button:hover {
-    background: #ffd700;
-    color: #333;
-}
 
 /* Social Icons */
 .social-icons {
@@ -406,5 +374,77 @@ body {
     .form-box,
     .map-box {
         height: auto;
+    }
+}
+
+/* -------------------------------------------------
+   ABOUT PAGE SECTION
+---------------------------------------------------*/
+/* About Heading */
+.about-container h1 {
+    font-size: 36px;
+    color: #0b641b;
+    margin-bottom: 25px;
+    border-bottom: 3px solid #0b641b;
+    padding-bottom: 12px;
+}
+
+/* About Paragraphs and List Items */
+.about-container p,
+.about-container ul li {
+    font-size: 18px; /* Same size for all text */
+    line-height: 1.8;
+    margin-bottom: 18px;
+    color: #333;
+}
+
+/* Vision and Mission Headings */
+.about-container h2 {
+    font-size: 30px; /* Heading larger */
+    color: #145c2a;
+    margin-top: 45px;
+    margin-bottom: 20px;
+}
+
+/* About Vision Mission List */
+.about-container ul {
+    list-style: none;
+    margin-top: 20px;
+    padding-left: 0;
+}
+
+.about-container ul li {
+    padding-left: 26px;
+    position: relative;
+}
+
+/* Flower / Diamond icon */
+.about-container ul li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #0b641b;
+    font-weight: bold;
+}
+
+/* Responsive About Section */
+@media (max-width: 768px) {
+    .about-container {
+        padding: 35px 25px;
+        margin: 30px 15px;
+    }
+
+    .about-container h1 {
+        font-size: 28px;
+    }
+
+    .about-container h2 {
+        font-size: 24px; /* Adjust for mobile */
+    }
+
+    .about-container p,
+    .about-container ul li {
+        font-size: 16px; /* Adjust for mobile */
     }
 }

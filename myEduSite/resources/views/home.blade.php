@@ -1,4 +1,4 @@
-@extends('layouts.app')
+<!-- @extends('layouts.app') -->
 
 @section('content')
 
@@ -97,6 +97,64 @@
             <h3 class="text-4xl font-bold text-rose-600">100%</h3>
             <p class="text-gray-600">Student Care</p>
         </div>
+    </div>
+</section>
+
+<!-- BLOG SECTION -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto max-w-5xl">
+
+        <h2 class="text-3xl font-bold text-center text-rose-600 mb-10">
+            Latest Blogs
+        </h2>
+
+        @forelse($blogs as $blog)
+            <div class="mb-8 border-b pb-6">
+                <h3 class="text-2xl font-semibold mb-2">
+                    {{ $blog->title }}
+                </h3>
+
+                <p class="text-gray-700 mb-2">
+                    {{ $blog->content }}
+                </p>
+
+                <a href="{{ url('/blog/'.$blog->id) }}" class="text-rose-600 font-semibold">
+                    Read More →
+                </a>
+            </div>
+        @empty
+            <p class="text-center text-gray-500">
+                No blogs available.
+            </p>
+        @endforelse
+
+        <!-- ADD BLOG FORM -->
+        @auth
+        <div class="mt-12 bg-gray-100 p-6 rounded-xl">
+            <h3 class="text-xl font-semibold mb-4">Add Blog</h3>
+
+            @if(session('success'))
+                <p class="text-green-600 mb-3">{{ session('success') }}</p>
+            @endif
+
+            <form method="POST" action="{{ route('blogs.store') }}">
+                @csrf
+
+                <input type="text" name="title"
+                       class="w-full mb-4 p-2 border rounded"
+                       placeholder="Blog Title">
+
+                <textarea name="content" rows="4"
+                          class="w-full mb-4 p-2 border rounded"
+                          placeholder="Blog Content"></textarea>
+
+                <button class="bg-rose-600 text-white px-4 py-2 rounded">
+                    Publish Blog
+                </button>
+            </form>
+        </div>
+        @endauth
+
     </div>
 </section>
 

@@ -508,4 +508,91 @@ body {
     }
 }
 
+/* Make "The Rose College" really big and centered */
+.about-title {
+    font-size: 5rem;        /* bigger heading */
+    line-height: 1.1;       /* tighter line spacing if it wraps */
+    text-align: center;     /* center the heading */
+    margin-bottom: 30px;
+    color: darkmagenta;    /* space below heading */
+}
+
+.about-text {
+    max-width: 800px;       /* make paragraph slightly wider */
+    margin: 0 auto;         /* center the text block */
+}
+
+.about-paragraph {
+    font-size: 1.5rem;      /* slightly bigger paragraph */
+    text-align: center;     /* center paragraph */
+}
+
+.blog-grid {
+    display: grid;
+    gap: 2rem; /* space between cards */
+}
+
+.blog-card {
+    background-color: transparent; /* no white box */
+    border: 2px solid #be123c; /* optional border to highlight card */
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.blog-card h3 {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: #be123c;
+}
+
+.blog-card p {
+    flex-grow: 1;
+    color: #374151;
+}
+
+.blog-card a {
+    align-self: start;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: #be123c;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.blog-card a:hover {
+    background-color: #9f1239;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1025px) {
+    .blog-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+
 

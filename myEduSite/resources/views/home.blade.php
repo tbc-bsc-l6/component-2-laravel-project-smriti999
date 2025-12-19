@@ -1,137 +1,61 @@
-<!-- @extends('layouts.app') -->
+@extends('layouts.app')
 
 @section('content')
 
-<!-- HERO SECTION -->
-<section class="bg-rose-600 text-white py-20">
-    <div class="container mx-auto text-center">
-        <h1 class="text-5xl font-bold mb-4">
-            The Rose School
-        </h1>
-        <p class="text-xl mb-6">
-            Nurturing Minds • Shaping Futures
-        </p>
-        <a href="{{ route('about') }}"
-           class="bg-white text-rose-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
-            Learn More
-        </a>
-    </div>
+<!-- FULL SCREEN IMAGE -->
+<section class="w-full h-screen">
+    <img src="{{ asset('images/home1.png') }}" alt="Rose School" class="w-full h-full object-cover">
 </section>
-
 <!-- ABOUT PREVIEW -->
-<section class="py-16 bg-gray-100">
-    <div class="container mx-auto grid md:grid-cols-2 gap-10 items-center">
-        <div>
-            <h2 class="text-3xl font-bold mb-4 text-rose-600">
-                About The Rose School
-            </h2>
-            <p class="text-gray-700 mb-4">
-                The Rose School is dedicated to providing quality education
-                in a caring and disciplined environment that supports
-                academic excellence and character development.
+<!-- ABOUT PREVIEW -->
+<section class="about-preview">
+    <div class="container">
+        <!-- Text Content -->
+        <div class="about-text">
+            <h1 class="about-title">The Rose College</h1>
+            <p class="about-paragraph">
+                The Rose College stands out for its exceptional academic programs, highly qualified faculty, 
+                and a nurturing environment that fosters growth, creativity, and leadership in every student.
             </p>
-            <a href="{{ route('about') }}" class="text-rose-600 font-semibold">
-                Read More →
-            </a>
+            <a href="{{ route('about') }}" class="learn-more-btn">
+                Learn More
+            </a> 
         </div>
-
-        <div class="bg-white p-8 rounded-xl shadow">
-            <ul class="space-y-3 text-gray-700">
-                <li>✔ Qualified & Experienced Teachers</li>
-                <li>✔ Safe and Supportive Environment</li>
-                <li>✔ Modern Classrooms</li>
-                <li>✔ Focus on Moral Values</li>
-            </ul>
-        </div>
-    </div>
 </section>
 
-<!-- FEATURES -->
-<section class="py-16">
-    <div class="container mx-auto text-center">
-        <h2 class="text-3xl font-bold mb-10 text-rose-600">
-            Why Choose The Rose School
-        </h2>
-
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-xl font-semibold mb-2">Academic Excellence</h3>
-                <p class="text-gray-600">
-                    A well-structured curriculum focused on conceptual learning.
-                </p>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-xl font-semibold mb-2">Holistic Development</h3>
-                <p class="text-gray-600">
-                    Encouraging creativity, leadership, and confidence.
-                </p>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-xl font-semibold mb-2">Co-Curricular Activities</h3>
-                <p class="text-gray-600">
-                    Sports, arts, and extracurricular programs for growth.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- SCHOOL HIGHLIGHTS -->
-<section class="py-16 bg-gray-100">
-    <div class="container mx-auto grid md:grid-cols-4 gap-8 text-center">
-        <div>
-            <h3 class="text-4xl font-bold text-rose-600">500+</h3>
-            <p class="text-gray-600">Students</p>
-        </div>
-        <div>
-            <h3 class="text-4xl font-bold text-rose-600">40+</h3>
-            <p class="text-gray-600">Teachers</p>
-        </div>
-        <div>
-            <h3 class="text-4xl font-bold text-rose-600">20+</h3>
-            <p class="text-gray-600">Years of Excellence</p>
-        </div>
-        <div>
-            <h3 class="text-4xl font-bold text-rose-600">100%</h3>
-            <p class="text-gray-600">Student Care</p>
-        </div>
-    </div>
-</section>
 
 <!-- BLOG SECTION -->
-<section class="py-16 bg-white">
-    <div class="container mx-auto max-w-5xl">
-
+<section class="py-16 bg-gray-100">
+    <div class="container mx-auto max-w-6xl">
         <h2 class="text-3xl font-bold text-center text-rose-600 mb-10">
             Latest Blogs
         </h2>
 
-        @forelse($blogs as $blog)
-            <div class="mb-8 border-b pb-6">
-                <h3 class="text-2xl font-semibold mb-2">
-                    {{ $blog->title }}
-                </h3>
-
-                <p class="text-gray-700 mb-2">
-                    {{ $blog->content }}
+        <div class="blog-grid grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @forelse($blogs as $blog)
+                <div class="blog-card p-6 rounded-xl shadow hover:shadow-lg transition">
+                    <h3 class="text-2xl font-semibold mb-3 text-rose-600">
+                        {{ $blog->title }}
+                    </h3>
+                    <p class="text-gray-700 mb-4">
+                        {{ Str::limit($blog->content, 120) }} <!-- short preview -->
+                    </p>
+                    <a href="{{ url('/blog/'.$blog->id) }}" 
+                       class="text-white bg-rose-600 px-4 py-2 rounded hover:bg-rose-700 transition inline-block">
+                        Read More →
+                    </a>
+                </div>
+            @empty
+                <p class="text-center text-gray-500 col-span-full">
+                    No blogs available.
                 </p>
-
-                <a href="{{ url('/blog/'.$blog->id) }}" class="text-rose-600 font-semibold">
-                    Read More →
-                </a>
-            </div>
-        @empty
-            <p class="text-center text-gray-500">
-                No blogs available.
-            </p>
-        @endforelse
+            @endforelse
+        </div>
 
         <!-- ADD BLOG FORM -->
         @auth
-        <div class="mt-12 bg-gray-100 p-6 rounded-xl">
-            <h3 class="text-xl font-semibold mb-4">Add Blog</h3>
+        <div class="mt-12">
+            <h3 class="text-xl font-semibold mb-4 text-rose-600">Add Blog</h3>
 
             @if(session('success'))
                 <p class="text-green-600 mb-3">{{ session('success') }}</p>
@@ -148,15 +72,15 @@
                           class="w-full mb-4 p-2 border rounded"
                           placeholder="Blog Content"></textarea>
 
-                <button class="bg-rose-600 text-white px-4 py-2 rounded">
+                <button class="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 transition">
                     Publish Blog
                 </button>
             </form>
         </div>
         @endauth
-
     </div>
 </section>
+<br><br>
 
 <!-- CALL TO ACTION -->
 <section class="bg-rose-600 text-white py-16 text-center">
@@ -167,7 +91,7 @@
         Building a strong foundation for lifelong learning.
     </p>
     <a href="{{ route('contact') }}"
-       class="bg-white text-rose-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">
+       class="bg-rose text-rose-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">
         Contact Us
     </a>
 </section>

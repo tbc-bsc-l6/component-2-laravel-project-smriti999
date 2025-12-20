@@ -95,6 +95,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//Routes of 3
+Route::middleware(['auth','role:Admin'])->group(function () {
+    // admin routes
+});
+
+Route::middleware(['auth','role:Teacher'])->group(function () {
+    // teacher routes
+});
+
+Route::middleware(['auth','role:Student'])->group(function () {
+    // student routes
+});
+
 /*
 |--------------------------------------------------------------------------
 | Auth Routes (Breeze)

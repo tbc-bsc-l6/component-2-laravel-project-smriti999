@@ -55,4 +55,11 @@ class User extends Authenticatable
             return $this->roles()->where('name', $role)->exists();
         }
 
+        public function modules()
+{
+    return $this->belongsToMany(Module::class)
+        ->withPivot('enrolled_at','status','completed_at');
+}
+
+
 }

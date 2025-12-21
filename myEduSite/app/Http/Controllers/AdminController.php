@@ -11,9 +11,15 @@ class AdminController extends Controller
 {
     // Admin dashboard
     public function index()
-    {
-        return view('admin.dashboard');
-    }
+{
+    $modules = Module::all(); // all modules
+    $teachers = User::whereHas('roles', function($q){
+        $q->where('name','Teacher');
+    })->get(); // all teachers
+    $users = User::all(); // for role change form
+
+    return view('admin.dashboard', compact('modules','teachers','users'));
+}
 
     // Show form to create a module
     public function createModule()
@@ -40,13 +46,23 @@ class AdminController extends Controller
 
     // Assign teacher to module
     public function assignTeacher(Request $request)
-    {
-        $module = Module::findOrFail($request->module_id);
-        $teacher = User::findOrFail($request->teacher_id);
+{
+    // Validate form input
+    $request->validate([
+        'module_id' => 'required|exists:modules,id',
+        'teacher_id' => 'required|exists:users,id',
+    ]);
 
-        $module->teachers()->syncWithoutDetaching($teacher); // attach without removing existing
-        return back()->with('success','Teacher assigned!');
-    }
+    // Get the module and teacher
+    $module = Module::findOrFail($request->module_id);
+    $teacher = User::findOrFail($request->teacher_id);
+
+    // Attach teacher to module without removing existing
+    $module->teachers()->syncWithoutDetaching($teacher);
+
+    return back()->with('success', 'Teacher assigned to module successfully!');
+}
+
 
     // Change user role
     public function changeRole(Request $request)

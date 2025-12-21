@@ -7,6 +7,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,6 +111,35 @@ Route::middleware(['auth','role:Teacher'])->group(function () {
 Route::middleware(['auth','role:Student'])->group(function () {
     // student routes
 });
+
+
+
+//route for admin teacher student
+Route::middleware(['auth','role:Admin'])->group(function(){
+    Route::get('/admin/dashboard',[AdminController::class,'index'])->name('admin.dashboard');
+    Route::get('/modules/create',[ModuleController::class,'create'])->name('modules.create');
+    Route::post('/modules/store',[ModuleController::class,'store'])->name('modules.store');
+    Route::put('/modules/toggle/{id}',[AdminController::class,'toggleModule'])->name('modules.toggle');
+
+    Route::post('/admin/assignTeacher',[AdminController::class,'assignTeacher'])->name('admin.assignTeacher');
+    Route::post('/admin/changeRole',[AdminController::class,'changeRole'])->name('admin.changeRole');
+});
+
+Route::middleware(['auth','role:Teacher'])->group(function(){
+    Route::get('/teacher/dashboard',[TeacherController::class,'index'])->name('teacher.dashboard');
+    Route::get('/teacher/students/{module_id}',[TeacherController::class,'students'])->name('teacher.students');
+    Route::post('/teacher/markStatus/{module_id}/{student_id}',[TeacherController::class,'markStatus'])->name('teacher.markStatus');
+});
+
+Route::middleware(['auth','role:Student'])->group(function(){
+    Route::get('/student/dashboard',[StudentController::class,'index'])->name('student.dashboard');
+    Route::post('/student/enroll/{module_id}',[StudentController::class,'enroll'])->name('student.enroll');
+});
+
+Route::middleware(['auth','role:Admin'])->group(function(){
+    Route::post('/admin/assignTeacher',[AdminController::class,'assignTeacher'])->name('admin.assignTeacher');
+});
+
 
 /*
 |--------------------------------------------------------------------------

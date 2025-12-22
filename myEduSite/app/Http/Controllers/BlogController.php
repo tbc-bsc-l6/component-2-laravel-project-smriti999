@@ -45,7 +45,7 @@ class BlogController extends Controller
             'slug' => Str::slug($data['title']),
             'author_name'=>$data['author'],
             'content'=> $data['content'],
-            'user_id'=> Auth::id()
+            'user_id'=> Auth::id()// OR $request->user_id
         ]);
         return redirect('/blogs');
     }
@@ -53,13 +53,11 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Blog $blog)
-    {
-        // $blog = Blog::find($id);
-        // return $blog;
-        // return $blog->blog_title;
-        return view('showblog',['blog' => $blog]);
-    }
+   public function show(Blog $blog)
+   {
+            return view('showblog', compact('blog'));
+   }
+
 
     /**
      * Show the form for editing the specified resource.

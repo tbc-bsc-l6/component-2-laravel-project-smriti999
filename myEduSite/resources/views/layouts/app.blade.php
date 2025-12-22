@@ -19,10 +19,7 @@
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
 
-        {{-- Navigation --}}
-        @include('layouts.navigation')
-
-        {{-- Custom Header --}}
+        {{-- I did Header --}}
         @include('header')
 
         <!-- Page Heading (Optional) -->

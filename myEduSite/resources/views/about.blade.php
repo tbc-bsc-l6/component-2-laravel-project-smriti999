@@ -38,6 +38,15 @@
         community engagement, ethical leadership, and research-driven learning, while upholding
         the highest standards of integrity and academic quality.
     </p>
+    <h2 class="text-center mb-4">Beginner Courses for Freshers</h2>
+        <p class="text-center">
+            At The Rose College, our beginner-level courses are specially designed for freshers
+            who are starting their academic journey. These programmes focus on building strong
+            foundational knowledge, practical skills, and confidence in key areas such as
+            business, computing, hospitality, and technology. With supportive teaching,
+            interactive learning, and a student-friendly environment, freshers are guided
+            step by step to succeed in higher education and future careers.
+        </p>
 
     <h2>1. Vision</h2>
     <p>

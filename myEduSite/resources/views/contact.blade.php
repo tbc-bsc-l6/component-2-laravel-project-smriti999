@@ -86,45 +86,13 @@
 
 </div>
 
-
-
-  <!-- ============================= -->
-  <!--       CONTACT CARDS           -->
-  <!-- ============================= -->
-  <section class="contact-section">
-      <div class="contact-card">
-        <h3>Accounts</h3>
-        <p><span class="icon">✉️</span> accounts@theroseschool.edu.np</p>
-        <p><span class="icon">📞</span> 9876543210</p>
-        <p><span class="icon">⏰</span> 10:30 AM - 3:00 PM</p>
-      </div>
-
-      <div class="contact-card">
-        <h3>Admissions</h3>
-        <p><span class="icon">✉️</span> admissions@theroseschool.edu.np</p>
-        <p><span class="icon">📞</span> 9784563210</p>
-        <p><span class="icon">⏰</span> 10:00 AM - 3:00 PM</p>
-      </div>
-
-      <div class="contact-card">
-        <h3>Student Service</h3>
-        <p><span class="icon">✉️</span> ssd@theroseschool.edu.np</p>
-        <p><span class="icon">📞</span> 9826235452</p>
-        <p><span class="icon">📞</span> 9823458565</p>
-        <p><span class="icon">📞</span> 9802135696</p>
-        <p><span class="icon">⏰</span> 9:30 AM - 4:30 PM</p>
-      </div>
-
-    </div>
-  </section>
-
-
-
   <!-- ============================= -->
   <!--        HOTLINE TABLE          -->
   <!-- ============================= -->
-  <div class="container mt-5">
+  <div class="container">
+    <div class="hotline-container">
     <h1 class="title">Hotline Numbers</h1>
+    </br>
 
     <table class="hotline-table">
       <thead>
@@ -185,6 +153,8 @@
 
       </tbody>
     </table>
+</br></br></br>
+</div>
   </div>
 
 </div>

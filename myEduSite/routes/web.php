@@ -40,10 +40,8 @@ Route::get('/blogs', function () {
     return view('blogs', compact('blogs'));
 })->name('blogs.index');
 
-// Single blog page
-Route::get('/blog/{blog}', function (Blog $blog) {
-    return view('showblog', compact('blog'));
-})->name('blogs.show');
+Route::get('/blogs/{blog}', [BlogController::class, 'show'])
+    ->name('blogs.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -135,7 +133,7 @@ Route::middleware(['auth','role:Student'])->group(function(){
     Route::get('/student/dashboard',[StudentController::class,'index'])->name('student.dashboard');
     Route::post('/student/enroll/{module_id}',[StudentController::class,'enroll'])->name('student.enroll');
 });
-
+//for select teacher from admin
 Route::middleware(['auth','role:Admin'])->group(function(){
     Route::post('/admin/assignTeacher',[AdminController::class,'assignTeacher'])->name('admin.assignTeacher');
 });

@@ -1,4 +1,4 @@
-@extends('layouts.testlayout')
+@extends('layouts.app')
 
 @section('pagetitle','Single Blog Page')
 @section('content')
@@ -9,6 +9,9 @@
 <hr/>
 <p>Post Body:<br/>{{ $blog->content }}</p>
 
-<a href="/blogs" >Back to Blog List</a>
+
+<a href="{{ url('/') }}" class="text-blue-600 hover:underline mt-4 inline-block">
+    ← Back to Blog List
+</a>
 
 @endsection

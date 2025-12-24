@@ -23,6 +23,16 @@
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
+                <div class="mt-4">
+            <x-input-label for="role" value="Role" />
+            <select name="role"
+                    class="block mt-1 w-full rounded border-gray-300">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+                <option value="admin">Administrator</option>
+
+            </select>
+        </div>
 
         <!-- Remember Me -->
         <div class="block mt-4">

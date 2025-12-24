@@ -4,53 +4,43 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Module;
+use App\Models\User;
 
 class ModuleController extends Controller
 {
-    // List all modules
-    public function index()
-    {
-        $modules = Module::where('is_available', true)->get();
-        return view('modules.index', compact('modules'));
-    }
-
-    // Show single module
-    public function show($id)
-    {
-        $module = Module::findOrFail($id);
-        return view('modules.show', compact('module'));
-    }
-
-    // Admin: create module form
+    // Admin: show create module form
     public function create()
     {
-        return view('admin.create_module');
+        $teachers = User::where('role', 'teacher')->get();
+        return view('admin.create_module', compact('teachers'));
     }
 
-    // Admin: store module
+    // Admin: store new module
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required|string',
-            'description'=>'nullable|string',
+            'name' => 'required|string',
+            'description' => 'nullable|string',
+            'teacher_id' => 'required|exists:users,id',
         ]);
 
         Module::create([
-            'name'=>$request->name,
-            'description'=>$request->description,
-            'is_available'=>true,
+            'name' => $request->name,
+            'description' => $request->description,
+            'teacher_id' => $request->teacher_id,
+            'is_available' => $request->has('is_available'),
         ]);
 
-        return redirect()->route('modules.index')->with('success','Module created!');
+        return redirect()->route('admin.dashboard')->with('success', 'Module created!');
     }
 
-    // Admin: toggle availability
+    // Admin: toggle module availability
     public function toggle($id)
     {
         $module = Module::findOrFail($id);
         $module->is_available = !$module->is_available;
         $module->save();
 
-        return back()->with('success','Module availability updated!');
+        return back()->with('success', 'Module availability updated!');
     }
 }

@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('modules', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->text('description')->nullable();
-        $table->foreignId('teacher_id')->nullable()->constrained('users')->onDelete('set null');
-        $table->boolean('is_available')->default(true);
-        $table->timestamps();
-    });
+        Schema::create('modules', function (Blueprint $table) {
+            $table->id();
+            $table->string('module')->unique();
+            $table->timestamps();
+        });
     }
 
     /**

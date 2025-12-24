@@ -1,20 +1,20 @@
 <?php
 
+//app/Models/Module.php
+
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Module extends Model
 {
-   public function students()
-{
-    return $this->belongsToMany(User::class)
-        ->withPivot('status','completed_at');
-}
+    use HasFactory;
+    protected $fillable = ['name', 'is_available'];
 
-public function teachers()
-{
-    return $this->belongsToMany(User::class,'module_teacher','module_id','teacher_id');
-}
 
+    public function teachers()
+    {
+        return $this->belongsToMany(User::class, 'module_teacher');
+    }
 }

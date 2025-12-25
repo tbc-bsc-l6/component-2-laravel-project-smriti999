@@ -19,8 +19,8 @@
         <td>{{ $module->id }}</td>
         <td>{{ $module->module }}</td>
         <td>
-            <a href="{{ route('admin.modules.edit', $module->id) }}">Edit</a>
-            <form action="{{ route('admin.modules.destroy', $module->id) }}" method="POST" style="display:inline;">
+            <a href="{{ route('admin.edit', $module->id) }}">Edit</a>
+            <form action="{{ route('admin.destroy', $module->id) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')
                 <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>

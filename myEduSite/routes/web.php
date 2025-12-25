@@ -135,6 +135,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('modules', [ModuleController::class, 'store'])->name('admin.store');
     Route::get('modules/{module}/edit', [ModuleController::class, 'edit'])->name('admin.edit');
     Route::put('modules/{module}', [ModuleController::class, 'update'])->name('admin.update');
+
     Route::delete('modules/{module}', [ModuleController::class, 'destroy'])->name('admin.destroy');
 });    
 });

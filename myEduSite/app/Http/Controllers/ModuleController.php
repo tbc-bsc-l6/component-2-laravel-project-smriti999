@@ -21,25 +21,22 @@ class ModuleController extends Controller
     }
 
     // Store a new module
-   public function store(Request $request)
+ public function store(Request $request)
 {
     $request->validate([
         'module' => 'required|string|max:255|unique:modules,module',
     ]);
 
-    dd($request->all()); // <- This will show if 'module' is coming
+    // Debug: make sure the value is coming
+    // dd($request->all());
 
-    Module::create([
-        'module' => $request->module,
-    ]);
+    $module = new Module();
+    $module->module = $request->module; // Assign directly
+    $module->save(); // Save to database
 
-    return redirect()->route('admin.create')
+    return redirect()->route('admin.create_module')
                      ->with('success', 'Module added successfully!');
 }
-
-
-
-
 
 
     // Show form to edit a module
@@ -49,19 +46,24 @@ class ModuleController extends Controller
     }
 
     // Update a module
-    public function update(Request $request, Module $module)
-    {
-        $request->validate([
-            'module' => 'required|string|max:255|unique:modules,module,' . $module->id,
-        ]);
+public function update(Request $request, Module $module)
+{
+    // Validate
+    $request->validate([
+        'module' => 'required|string|max:255|unique:modules,module,' . $module->id,
+    ]);
 
-        $module->update([
-            'module' => $request->module,
-        ]);
+    // Direct DB update (like your Blog example)
+    Module::where('id', $module->id)->update([
+        'module' => $request->module,
+    ]);
 
-        return redirect()->route('admin.index')
-                         ->with('success', 'Module updated successfully!');
-    }
+    return redirect()->route('admin.index')
+                     ->with('success', 'Module updated successfully!');
+}
+
+
+
 
     // Delete a module
     public function destroy(Module $module)

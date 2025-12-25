@@ -2,56 +2,64 @@
 
 @section('content')
 
-<h2>Assign Teacher</h2>
+<h1>Assign Teacher</h1>
 
 @if(session('success'))
-    <div style="color: green;">{{ session('success') }}</div>
+    <p style="color:green">{{ session('success') }}</p>
 @endif
 
-{{-- Module selector (GET request) --}}
-<form method="GET" action="{{ route('admin.assignTeacher') }}">
-    <label>Select Module:</label>
-    <select name="module_id" onchange="this.form.submit()">
-        <option value="">-- Select Module --</option>
-        @foreach($modules as $module)
-            <option value="{{ $module->id }}" {{ isset($selectedModule) && $selectedModule->id == $module->id ? 'selected' : '' }}>
-                {{ $module->module }}
-            </option>
-        @endforeach
-    </select>
+<h2>Add Teacher</h2>
+<form method="POST" action="{{ route('admin.addTeacher') }}">
+    @csrf
+    <input name="name" placeholder="Name" required>
+    <input name="email" placeholder="Email" required>
+    <button>Add</button>
 </form>
 
-@if(isset($selectedModule))
-    <h3>Module: {{ $selectedModule->module }}</h3>
+<hr>
 
-    {{-- Attach teacher (POST request) --}}
-    <form action="{{ route('admin.assignTeacherSubmit') }}" method="POST">
-        @csrf
-        <input type="hidden" name="module_id" value="{{ $selectedModule->id }}">
-        <select name="teacher_id" required>
-            <option value="">-- Select Teacher --</option>
-            @foreach($teachers as $teacher)
-                <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
-            @endforeach
-        </select>
-        <button type="submit">Attach Teacher</button>
-    </form>
+<h2>Assign Teacher to Module</h2>
+<form method="POST" action="{{ route('admin.assignTeacherSubmit') }}">
+    @csrf
 
-    <h4>Attached Teachers</h4>
+    <select name="module_id" required>
+        <option value="">Select Module</option>
+        @foreach($modules as $module)
+            <option value="{{ $module->id }}">{{ $module->module }}</option>
+        @endforeach
+    </select>
+
+    <select name="teacher_id" required>
+        <option value="">Select Teacher</option>
+        @foreach($teachers as $teacher)
+            <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+        @endforeach
+    </select>
+
+    <button>Assign</button>
+</form>
+
+<hr>
+
+<h2>Assigned Teachers</h2>
+@foreach($modules as $module)
+    <h3>{{ $module->module }}</h3>
     <ul>
-        @forelse($selectedModule->teachers as $teacher)
+        @forelse($module->teachers as $teacher)
             <li>
                 {{ $teacher->name }}
-                <form action="{{ route('admin.removeTeacher', [$selectedModule->id, $teacher->id]) }}" method="POST" style="display:inline;">
+                <form method="POST"
+                      action="{{ route('admin.removeTeacher', [$module->id, $teacher->id]) }}"
+                      style="display:inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Remove this teacher?')">Remove</button>
+                    <button>Remove</button>
                 </form>
             </li>
         @empty
-            <li>No teachers attached yet.</li>
+            <li>No teachers</li>
         @endforelse
     </ul>
-@endif
+@endforeach
 
 @endsection

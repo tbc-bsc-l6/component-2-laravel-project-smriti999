@@ -72,31 +72,33 @@ public function update(Request $request, Module $module)
 
 
 
-public function assignTeacherPage()
-{
-    $modules = Module::all();
-    $teachers = Teacher::all();
-    return view('admin.assignTeacher', compact('modules', 'teachers'));
-}
+ public function assignTeacherPage()
+    {
+        $modules = Module::with('teachers')->get();
+        $teachers = Teacher::all();
 
-    // Add new teacher
+        return view('admin.assignTeacher', compact('modules', 'teachers'));
+    }
+
+    // ADD TEACHER
     public function addTeacher(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:teachers,name',
+            'name'  => 'required',
+            'email' => 'required|email|unique:teachers,email',
         ]);
 
-        Teacher::create(['name' => $request->name]);
+        Teacher::create($request->only('name', 'email'));
 
         return redirect()->route('admin.assignTeacher')
-                         ->with('success', 'Teacher added successfully!');
+            ->with('success', 'Teacher added successfully');
     }
 
-    // Assign teacher to module
-    public function assignTeacher(Request $request)
+    // ASSIGN TEACHER
+    public function assignTeacherSubmit(Request $request)
     {
         $request->validate([
-            'module_id' => 'required|exists:modules,id',
+            'module_id'  => 'required|exists:modules,id',
             'teacher_id' => 'required|exists:teachers,id',
         ]);
 
@@ -104,16 +106,15 @@ public function assignTeacherPage()
         $module->teachers()->syncWithoutDetaching($request->teacher_id);
 
         return redirect()->route('admin.assignTeacher')
-                         ->with('success', 'Teacher assigned successfully!');
+            ->with('success', 'Teacher assigned');
     }
 
-    // Remove teacher from module
+    // REMOVE TEACHER
     public function removeTeacher(Module $module, Teacher $teacher)
     {
         $module->teachers()->detach($teacher->id);
 
         return redirect()->route('admin.assignTeacher')
-                         ->with('success', 'Teacher removed successfully!');
+            ->with('success', 'Teacher removed');
     }
-
 }

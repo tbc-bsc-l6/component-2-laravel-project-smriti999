@@ -140,22 +140,25 @@ Route::middleware(['auth'])->group(function () {
 });  
 
 Route::prefix('admin')->middleware('auth')->group(function () {
-    // Show assign teacher page
+
+    // PAGE
     Route::get('assign-teacher', [ModuleController::class, 'assignTeacherPage'])
-         ->name('admin.assignTeacher');
+        ->name('admin.assignTeacher');
 
-    // Add new teacher
-    Route::post('assign-teacher/add-teacher', [ModuleController::class, 'addTeacher'])
-         ->name('admin.addTeacher');
+    // ADD TEACHER
+    Route::post('add-teacher', [ModuleController::class, 'addTeacher'])
+        ->name('admin.addTeacher');
 
-    // Assign teacher to module
-    Route::post('assign-teacher/assign', [ModuleController::class, 'assignTeacher'])
-         ->name('admin.assignTeacherSubmit');
+    // ASSIGN TEACHER TO MODULE
+    Route::post('assign-teacher', [ModuleController::class, 'assignTeacherSubmit'])
+        ->name('admin.assignTeacherSubmit');
 
-    // Remove teacher from module
-    Route::delete('assign-teacher/remove/{module}/{teacher}', [ModuleController::class, 'removeTeacher'])
-         ->name('admin.removeTeacher');
+    // REMOVE TEACHER
+    Route::delete('remove-teacher/{module}/{teacher}', [ModuleController::class, 'removeTeacher'])
+        ->name('admin.removeTeacher');
 });
+
+
 
 });
 /*

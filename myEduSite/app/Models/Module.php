@@ -1,7 +1,5 @@
 <?php
 
-//app/Models/Module.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Module extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'is_available'];
 
-
-    public function teachers()
+    // Allow mass assignment for 'module'
+    protected $fillable = ['module'];
+        public function teachers()
     {
-        return $this->belongsToMany(User::class, 'module_teacher');
+        return $this->belongsToMany(Teacher::class, 'module_teacher');
     }
 }

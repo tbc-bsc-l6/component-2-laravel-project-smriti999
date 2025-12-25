@@ -4,48 +4,36 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Module;
+use App\Models\Teacher;
 
 class TeacherController extends Controller
 {
-    // Teacher middleware applied via route
-    // No constructor needed if middleware applied in routes
-
-    /**
-     * Show dashboard with assigned modules
-     */
     public function index()
     {
-        $modules = auth()->user()->modules; // only modules assigned
-        return view('teacher.dashboard', compact('modules'));
+        $teachers = Teacher::all();
+        return view('admin.teachers.index', compact('teachers'));
     }
 
-    /**
-     * Show students of a module
-     */
-    public function students($module_id)
+    public function create()
     {
-        $module = Module::findOrFail($module_id);
-        $students = $module->students; // all students enrolled in this module
-        return view('teacher.students', compact('module','students'));
+        return view('admin.teachers.create');
     }
 
-    /**
-     * Set PASS/FAIL for a student
-     */
-    public function markStatus(Request $request, $module_id, $student_id)
+    public function store(Request $request)
     {
         $request->validate([
-            'status' => 'required|in:PASS,FAIL',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:teachers,email',
         ]);
 
-        $module = Module::findOrFail($module_id);
+        Teacher::create($request->only('name', 'email'));
 
-        // Update pivot table
-        $module->students()->updateExistingPivot($student_id, [
-            'status' => $request->status,
-            'completed_at' => now(),
-        ]);
+        return redirect()->route('admin.teachers.index')->with('success', 'Teacher created successfully!');
+    }
 
-        return back()->with('success', 'Status updated!');
+    public function destroy(Teacher $teacher)
+    {
+        $teacher->delete();
+        return redirect()->route('admin.teachers.index')->with('success', 'Teacher deleted successfully!');
     }
 }

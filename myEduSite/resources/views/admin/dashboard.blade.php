@@ -52,23 +52,6 @@
     <button type="submit">Update Role</button>
 </form>
 
-<!-- ASSIGN TEACHER TO MODULE FORM -->
-<h3>Assign Teacher to Module</h3>
-<form action="{{ route('admin.assignTeacher') }}" method="POST">
-    @csrf
-    <select name="module_id" required>
-        @foreach($modules as $module)
-            <option value="{{ $module->id }}">{{ $module->name }}</option>
-        @endforeach
-    </select>
 
-    <select name="teacher_id" required>
-        @foreach($teachers as $teacher)
-            <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
-        @endforeach
-    </select>
-
-    <button type="submit">Assign Teacher</button>
-</form>
 
 @endsection

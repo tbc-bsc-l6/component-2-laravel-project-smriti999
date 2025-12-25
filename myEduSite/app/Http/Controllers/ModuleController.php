@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Module;
+use App\Models\Teacher;
 
 class ModuleController extends Controller
 {
@@ -61,10 +62,6 @@ public function update(Request $request, Module $module)
     return redirect()->route('admin.index')
                      ->with('success', 'Module updated successfully!');
 }
-
-
-
-
     // Delete a module
     public function destroy(Module $module)
     {
@@ -72,4 +69,51 @@ public function update(Request $request, Module $module)
         return redirect()->route('admin.index')
                          ->with('success', 'Module deleted successfully!');
     }
+
+
+
+public function assignTeacherPage()
+{
+    $modules = Module::all();
+    $teachers = Teacher::all();
+    return view('admin.assignTeacher', compact('modules', 'teachers'));
+}
+
+    // Add new teacher
+    public function addTeacher(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:teachers,name',
+        ]);
+
+        Teacher::create(['name' => $request->name]);
+
+        return redirect()->route('admin.assignTeacher')
+                         ->with('success', 'Teacher added successfully!');
+    }
+
+    // Assign teacher to module
+    public function assignTeacher(Request $request)
+    {
+        $request->validate([
+            'module_id' => 'required|exists:modules,id',
+            'teacher_id' => 'required|exists:teachers,id',
+        ]);
+
+        $module = Module::findOrFail($request->module_id);
+        $module->teachers()->syncWithoutDetaching($request->teacher_id);
+
+        return redirect()->route('admin.assignTeacher')
+                         ->with('success', 'Teacher assigned successfully!');
+    }
+
+    // Remove teacher from module
+    public function removeTeacher(Module $module, Teacher $teacher)
+    {
+        $module->teachers()->detach($teacher->id);
+
+        return redirect()->route('admin.assignTeacher')
+                         ->with('success', 'Teacher removed successfully!');
+    }
+
 }

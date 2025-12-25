@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('module_student', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('module_id')->constrained();
-        $table->foreignId('user_id')->constrained();
-        $table->timestamp('enrolled_at')->nullable();
-        $table->string('pass_status')->nullable();
-        $table->timestamp('completed_at')->nullable();
-        $table->timestamps();
-    });
+       Schema::create('module_student', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('module_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->timestamp('enrolled_at')->nullable();
+            $table->string('pass_status')->nullable();
+            $table->timestamp('completed_at')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

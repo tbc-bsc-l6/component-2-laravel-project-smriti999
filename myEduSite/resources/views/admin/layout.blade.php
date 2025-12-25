@@ -9,7 +9,7 @@
 <body>
     <nav>
         <a href="{{ route('admin.dashboard') }}">Dashboard</a> |
-        <a href="{{ route('modules.create') }}">Add Module</a> |
+        <a href="{{ route('admin.modules.create') }}">Add Module</a> |
         <a href="{{ route('admin.assignTeacher') }}">Assign Teacher</a> |
         <a href="{{ route('admin.changeRole') }}">Change User Role</a> |
         <a href="{{ route('logout') }}"

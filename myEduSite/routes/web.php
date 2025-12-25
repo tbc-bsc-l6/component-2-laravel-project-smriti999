@@ -123,6 +123,21 @@ Route::middleware(['auth'])->prefix('student')->group(function () {
     Route::post('/enroll/{module_id}', [StudentController::class, 'enroll'])->name('student.enroll');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/modules/create', [ModuleController::class, 'create'])
+        ->name('admin.modules.create');
+
+    Route::post('/admin/modules', [ModuleController::class, 'store'])
+        ->name('admin.modules.store');
+    Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('modules', [ModuleController::class, 'index'])->name('admin.index');
+    Route::get('create_module', [ModuleController::class, 'create'])->name('admin.create_module');
+    Route::post('modules', [ModuleController::class, 'store'])->name('admin.store');
+    Route::get('modules/{module}/edit', [ModuleController::class, 'edit'])->name('admin.edit');
+    Route::put('modules/{module}', [ModuleController::class, 'update'])->name('admin.update');
+    Route::delete('modules/{module}', [ModuleController::class, 'destroy'])->name('admin.destroy');
+});    
+});
 /*
 |--------------------------------------------------------------------------
 | Auth Routes (Breeze)

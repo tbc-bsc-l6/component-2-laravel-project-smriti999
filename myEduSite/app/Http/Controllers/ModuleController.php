@@ -4,43 +4,70 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Module;
-use App\Models\User;
 
 class ModuleController extends Controller
 {
-    // Admin: show create module form
+    // Show all modules
+    public function index()
+    {
+        $modules = Module::all(); // Get all modules
+        return view('admin.index', compact('modules')); // Correct view path
+    }
+
+    // Show form to create a module
     public function create()
     {
-        $teachers = User::where('role', 'teacher')->get();
-        return view('admin.create_module', compact('teachers'));
+        return view('admin.create_module'); // Correct view path
     }
 
-    // Admin: store new module
-    public function store(Request $request)
+    // Store a new module
+   public function store(Request $request)
+{
+    $request->validate([
+        'module' => 'required|string|max:255|unique:modules,module',
+    ]);
+
+    dd($request->all()); // <- This will show if 'module' is coming
+
+    Module::create([
+        'module' => $request->module,
+    ]);
+
+    return redirect()->route('admin.create')
+                     ->with('success', 'Module added successfully!');
+}
+
+
+
+
+
+
+    // Show form to edit a module
+    public function edit(Module $module)
+    {
+        return view('admin.edit', compact('module')); // Correct view path
+    }
+
+    // Update a module
+    public function update(Request $request, Module $module)
     {
         $request->validate([
-            'name' => 'required|string',
-            'description' => 'nullable|string',
-            'teacher_id' => 'required|exists:users,id',
+            'module' => 'required|string|max:255|unique:modules,module,' . $module->id,
         ]);
 
-        Module::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'teacher_id' => $request->teacher_id,
-            'is_available' => $request->has('is_available'),
+        $module->update([
+            'module' => $request->module,
         ]);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Module created!');
+        return redirect()->route('admin.index')
+                         ->with('success', 'Module updated successfully!');
     }
 
-    // Admin: toggle module availability
-    public function toggle($id)
+    // Delete a module
+    public function destroy(Module $module)
     {
-        $module = Module::findOrFail($id);
-        $module->is_available = !$module->is_available;
-        $module->save();
-
-        return back()->with('success', 'Module availability updated!');
+        $module->delete();
+        return redirect()->route('admin.index')
+                         ->with('success', 'Module deleted successfully!');
     }
 }

@@ -1,35 +1,22 @@
 @extends('admin.layout')
 
 @section('content')
-<h2>Create New Module</h2>
+<h1>Add Module</h1>
 
-<form action="{{ route('modules.store') }}" method="POST">
+@if ($errors->any())
+    <ul style="color:red">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+@endif
+
+<form action="{{ route('admin.store') }}" method="POST">
     @csrf
-    <div>
-        <label>Module Name:</label>
-        <input type="text" name="name" required>
-    </div>
-
-    <div>
-        <label>Description:</label>
-        <textarea name="description"></textarea>
-    </div>
-
-    <div>
-        <label>Teacher:</label>
-        <select name="teacher_id" required>
-            <option value="">-- Select Teacher --</option>
-            @foreach($teachers as $teacher)
-                <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
-            @endforeach
-        </select>
-    </div>
-
-    <div>
-        <label>Available:</label>
-        <input type="checkbox" name="is_available" value="1" checked>
-    </div>
-
-    <button type="submit">Create Module</button>
+    <label>Module Name:</label>
+    <input type="text" name="module" required>
+    <button type="submit">Add</button>
 </form>
+
+<a href="{{ route('admin.index') }}">Back to list</a>
 @endsection

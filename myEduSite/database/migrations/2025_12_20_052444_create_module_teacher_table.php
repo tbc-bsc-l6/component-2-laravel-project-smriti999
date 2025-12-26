@@ -10,19 +10,9 @@ return new class extends Migration
     {
         Schema::create('module_teacher', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('module_id');
-            $table->unsignedBigInteger('teacher_id');
+            $table->foreignId('module_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('module_id')
-                  ->references('id')
-                  ->on('modules')
-                  ->onDelete('cascade');
-
-            $table->foreign('teacher_id')
-                  ->references('id')
-                  ->on('teachers')
-                  ->onDelete('cascade');
         });
     }
 

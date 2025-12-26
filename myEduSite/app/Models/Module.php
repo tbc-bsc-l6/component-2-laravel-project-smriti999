@@ -11,8 +11,13 @@ class Module extends Model
 
     // Allow mass assignment for 'module'
     protected $fillable = ['module'];
-        public function teachers()
-    {
-        return $this->belongsToMany(Teacher::class, 'module_teacher');
-    }
+     public function teachers()
+{
+    return $this->belongsToMany(
+        User::class,
+        'module_teacher',
+        'module_id',
+        'user_id'
+    );
+}
 }

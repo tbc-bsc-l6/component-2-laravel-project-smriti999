@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Role;
 use App\Models\Module;
-use App\Models\Teacher;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ModuleController extends Controller
 {
@@ -72,47 +73,57 @@ public function update(Request $request, Module $module)
 
 
 
- public function assignTeacherPage()
+    // Show assign teacher page
+    public function assignTeacherPage()
     {
         $modules = Module::with('teachers')->get();
-        $teachers = Teacher::all();
+
+        // Get all users with role = Teacher
+        $teacherRole = Role::where('name', 'Teacher')->first();
+        $teachers = User::where('role_id', $teacherRole->id)->get();
 
         return view('admin.assignTeacher', compact('modules', 'teachers'));
     }
 
-    // ADD TEACHER
+    // Add teacher (as a User with role = Teacher)
     public function addTeacher(Request $request)
     {
         $request->validate([
-            'name'  => 'required',
-            'email' => 'required|email|unique:teachers,email',
+            'name' => 'required|string|max:255',
         ]);
 
-        Teacher::create($request->only('name', 'email'));
+        $teacherRole = Role::where('name', 'Teacher')->first();
+
+        User::create([
+            'name'     => $request->name,
+            'email'    => $request->name.'_'.time().'@example.com', // dummy unique email
+            'password' => Hash::make('password'),
+            'role_id'  => $teacherRole->id,
+        ]);
 
         return redirect()->route('admin.assignTeacher')
             ->with('success', 'Teacher added successfully');
     }
 
-    // ASSIGN TEACHER
+    // Assign teacher to module
     public function assignTeacherSubmit(Request $request)
     {
         $request->validate([
-            'module_id'  => 'required|exists:modules,id',
-            'teacher_id' => 'required|exists:teachers,id',
+            'module_id' => 'required|exists:modules,id',
+            'user_id'   => 'required|exists:users,id',
         ]);
 
         $module = Module::findOrFail($request->module_id);
-        $module->teachers()->syncWithoutDetaching($request->teacher_id);
+        $module->teachers()->syncWithoutDetaching([$request->user_id]);
 
         return redirect()->route('admin.assignTeacher')
             ->with('success', 'Teacher assigned');
     }
 
-    // REMOVE TEACHER
-    public function removeTeacher(Module $module, Teacher $teacher)
+    // Remove teacher from module
+    public function removeTeacher(Module $module, User $user)
     {
-        $module->teachers()->detach($teacher->id);
+        $module->teachers()->detach($user->id);
 
         return redirect()->route('admin.assignTeacher')
             ->with('success', 'Teacher removed');

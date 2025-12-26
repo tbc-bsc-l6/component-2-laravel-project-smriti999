@@ -5,79 +5,73 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Module;
 use App\Models\User;
-use App\Models\UserRole;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+    // Dashboard
     public function index()
     {
-        $modules = Module::all();
+        $modules = Module::with('teachers')->get();
+        $teacherRole = Role::where('name', 'Teacher')->first();
+        $teachers = User::where('role_id', $teacherRole->id)->get();
         $users = User::all();
-        $teachers = User::whereHas('role', fn($q) => $q->where('name','Teacher'))->get();
 
-        return view('admin.dashboard', compact('modules','users','teachers'));
+        return view('admin.dashboard', compact('modules', 'teachers', 'users'));
     }
 
-    public function assignTeacher(Request $request)
+    // Show Assign Teacher Page
+    public function assignTeacherPage()
+    {
+        $modules = Module::with('teachers')->get();
+        $teacherRole = Role::where('name', 'Teacher')->first();
+        $teachers = User::where('role_id', $teacherRole->id)->get();
+
+        return view('admin.assignTeacher', compact('modules', 'teachers'));
+    }
+
+    // Add new teacher (also adds to users table)
+    public function addTeacher(Request $request)
     {
         $request->validate([
-            'teacher_id' => 'required|exists:users,id',
+            'name' => 'required|string|max:255',
+        ]);
+
+        $teacherRole = Role::where('name', 'Teacher')->first();
+        if (!$teacherRole) {
+            return back()->with('error', 'Teacher role not found');
+        }
+
+        User::create([
+            'name'     => $request->name,
+            'email'    => $request->name . '_' . time() . '@example.com', // unique dummy email
+            'password' => Hash::make('password'),
+            'role_id'  => $teacherRole->id,
+        ]);
+
+        return redirect()->route('admin.assignTeacherPage')->with('success', 'Teacher added successfully.');
+    }
+
+    // Assign teacher to a module (POST)
+    public function assignTeacherSubmit(Request $request)
+    {
+        $request->validate([
             'module_id'  => 'required|exists:modules,id',
+            'teacher_id' => 'required|exists:users,id',
         ]);
 
         $module = Module::findOrFail($request->module_id);
-        $module->teacher_id = $request->teacher_id;
-        $module->save();
+        $module->teachers()->syncWithoutDetaching([$request->teacher_id]);
 
         return back()->with('success', 'Teacher assigned successfully.');
     }
 
-    public function changeRole(Request $request)
+    // Remove teacher from a module
+    public function removeTeacher(Module $module, User $user)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'role'    => 'required|string|in:Admin,Teacher,Student',
-        ]);
+        $module->teachers()->detach($user->id);
 
-        $user = User::findOrFail($request->user_id);
-        $role = UserRole::where('name', $request->role)->first();
-
-        if(!$role) return back()->with('error','Role not found');
-
-        $user->user_role_id = $role->id;
-        $user->save();
-
-        return back()->with('success','User role updated successfully.');
-    }
-
-    public function addTeacher(Request $request)
-    {
-        $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'nullable|string|min:6',
-        ]);
-
-        $teacherRole = UserRole::where('name','Teacher')->first();
-        if(!$teacherRole) return back()->with('error','Teacher role not found');
-
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password ?? 'password'),
-            'user_role_id' => $teacherRole->id,
-        ]);
-
-        return back()->with('success','Teacher added successfully.');
-    }
-
-    public function removeTeacher(User $user)
-    {
-        if($user->hasRole('Teacher')){
-            $user->delete();
-            return back()->with('success','Teacher removed successfully.');
-        }
-        return back()->with('error','Cannot delete this user.');
+        return back()->with('success', 'Teacher removed successfully.');
     }
 }

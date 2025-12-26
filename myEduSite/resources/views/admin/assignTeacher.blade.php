@@ -1,9 +1,36 @@
+@extends('admin.layout')
+
+@section('content')
+<h1>Assign Teacher</h1>
+
+@if(session('success'))
+    <p style="color:green">{{ session('success') }}</p>
+@endif
+@if(session('error'))
+    <p style="color:red">{{ session('error') }}</p>
+@endif
+
+<hr>
+
 <h2>Add Teacher</h2>
 <form method="POST" action="{{ route('admin.addTeacher') }}">
     @csrf
     <input name="name" placeholder="Teacher Name" required>
-    <button>Add</button>
+    <button type="submit">Add</button>
 </form>
+
+<h2>All Teachers</h2>
+@if($teachers->count() > 0)
+    <ul>
+        @foreach($teachers as $teacher)
+            <li>{{ $teacher->name }}</li>
+        @endforeach
+    </ul>
+@else
+    <p>No teachers added yet</p>
+@endif
+
+<hr>
 
 <h2>Assign Teacher to Module</h2>
 <form method="POST" action="{{ route('admin.assignTeacherSubmit') }}">
@@ -17,13 +44,15 @@
 
     <select name="user_id" required>
         <option value="">Select Teacher</option>
-        @foreach($teachers as $teacher)
-            <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+        @foreach($users as $user)
+            <option value="{{ $user->id }}">{{ $user->name }}</option>
         @endforeach
     </select>
 
-    <button>Assign</button>
+    <button type="submit">Assign</button>
 </form>
+
+<hr>
 
 <h2>Assigned Teachers</h2>
 @foreach($modules as $module)
@@ -43,3 +72,4 @@
         @endforelse
     </ul>
 @endforeach
+@endsection

@@ -139,23 +139,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('modules/{module}', [ModuleController::class, 'destroy'])->name('admin.destroy');
 });  
 
-Route::prefix('admin')->middleware('auth')->group(function () {
-
-    // PAGE
-    Route::get('assign-teacher', [ModuleController::class, 'assignTeacherPage'])
-        ->name('admin.assignTeacher');
-
-    // ADD TEACHER
-    Route::post('add-teacher', [ModuleController::class, 'addTeacher'])
-        ->name('admin.addTeacher');
-
-    // ASSIGN TEACHER TO MODULE
-    Route::post('assign-teacher', [ModuleController::class, 'assignTeacherSubmit'])
-        ->name('admin.assignTeacherSubmit');
-
-    // REMOVE TEACHER
-    Route::delete('remove-teacher/{module}/{teacher}', [ModuleController::class, 'removeTeacher'])
-        ->name('admin.removeTeacher');
+Route::prefix('admin')->group(function() {
+    Route::get('assign-teacher', [TeacherController::class, 'index'])->name('admin.assignTeacher');
+    Route::post('add-teacher', [TeacherController::class, 'store'])->name('admin.addTeacher');
+    Route::post('assign-teacher-submit', [TeacherController::class, 'assign'])->name('admin.assignTeacherSubmit');
+    Route::delete('remove-teacher/{user}', [TeacherController::class, 'destroy'])->name('admin.removeTeacher');
 });
 
 

@@ -106,26 +106,24 @@ public function update(Request $request, Module $module)
     }
 
     // Assign teacher to module
-    public function assignTeacherSubmit(Request $request)
+    public function assignTeacher(Request $request)
     {
         $request->validate([
             'module_id' => 'required|exists:modules,id',
-            'user_id'   => 'required|exists:users,id',
+            'teacher_id' => 'required|exists:users,id',
         ]);
 
         $module = Module::findOrFail($request->module_id);
-        $module->teachers()->syncWithoutDetaching([$request->user_id]);
+        $module->teachers()->syncWithoutDetaching($request->teacher_id);
 
-        return redirect()->route('admin.assignTeacher')
-            ->with('success', 'Teacher assigned');
+        return back()->with('success','Teacher assigned successfully.');
     }
 
     // Remove teacher from module
-    public function removeTeacher(Module $module, User $user)
+  public function removeTeacher(Module $module, User $user)
     {
         $module->teachers()->detach($user->id);
 
-        return redirect()->route('admin.assignTeacher')
-            ->with('success', 'Teacher removed');
+        return back()->with('success','Teacher removed successfully.');
     }
 }

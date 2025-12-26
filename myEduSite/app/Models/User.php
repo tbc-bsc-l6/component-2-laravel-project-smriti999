@@ -32,6 +32,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+    public function modules()
+    {
+        return $this->belongsToMany(Module::class, 'module_teacher', 'user_id', 'module_id');
+    }
 
     // Helper: Check if user has a specific role
     public function hasRole(string $roleName): bool
@@ -52,14 +56,14 @@ class User extends Authenticatable
             $q->where('name', $roleName);
         });
     }
-
-    public function modules()
+    public function teacher()
 {
-    return $this->belongsToMany(
-        Module::class,
-        'module_teacher',
-        'user_id',
-        'module_id'
-    );
+    return $this->hasOne(Teacher::class);
 }
+
+public function isTeacher(): bool
+{
+    return $this->role->name === 'Teacher';
+}
+
 }

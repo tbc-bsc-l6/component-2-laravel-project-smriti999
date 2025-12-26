@@ -147,7 +147,12 @@ Route::prefix('admin')->group(function() {
 });
 
 
+//changes the roll
+Route::get('/admin/change-role', [AdminController::class, 'changeRolePage'])
+    ->name('admin.changeRolePage');
 
+Route::post('/admin/change-role', [AdminController::class, 'changeRole'])
+    ->name('admin.changeRole');
 });
 /*
 |--------------------------------------------------------------------------

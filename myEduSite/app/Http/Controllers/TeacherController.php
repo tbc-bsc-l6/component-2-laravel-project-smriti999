@@ -3,99 +3,40 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Module;
-use App\Models\Teacher;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class TeacherController extends Controller
 {
-    // Show the Assign Teacher page
-    public function index()
+    // Show teacher dashboard with assigned modules
+    public function modules()
     {
-        $modules = Module::with('teachers')->get();
+        $teacher = Auth::user();
 
-        // Teachers for listing (from teachers table)
-        $teachers = Teacher::all();
+        // Get assigned modules with students
+        $modules = $teacher->modules()->with('students')->get();
 
-        // Users with role = Teacher (for assigning modules)
-        $teacherRole = Role::where('name', 'Teacher')->first();
-        $users = $teacherRole ? User::where('role_id', $teacherRole->id)->get() : collect();
-
-        return view('admin.assignTeacher', compact('modules', 'teachers', 'users'));
+        return view('teacher.dashboard', compact('modules'));
     }
 
-    // Add new teacher (adds to users + teachers)
-    public function store(Request $request)
+    // Show students of a module
+    public function students(Module $module)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $teacherRole = Role::where('name', 'Teacher')->first();
-        if (!$teacherRole) return redirect()->back()->with('error', 'Teacher role not found!');
-
-        // Add to users table
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->name.'_'.time().'@example.com',
-            'password' => Hash::make('password'),
-            'role_id'  => $teacherRole->id,
-        ]);
-
-        // Add to teachers table
-        Teacher::create([
-            'name' => $request->name,
-        ]);
-
-        return redirect()->back()->with('success', 'Teacher added successfully!');
+        $students = $module->students; // pivot includes pass_status, completed_at
+        return view('teacher.students', compact('module', 'students'));
     }
-    //admin delete the teacher 
-    public function removeTeacher(User $user)
-        {
-            // detach teacher from all modules
-            $user->modules()->detach();
 
-            // delete teacher user
-            $user->delete();
-
-            return back()->with('success', 'Teacher removed successfully.');
-        }
-
-
-    // Assign teacher to module
-    public function assign(Request $request)
+    // Set PASS / FAIL for a student
+    public function setStatus(Request $request, Module $module, User $student)
     {
-        $request->validate([
-            'module_id' => 'required|exists:modules,id',
-            'user_id'   => 'required|exists:users,id',
+        $status = $request->input('pass_status'); // 'PASS' or 'FAIL'
+
+        $module->students()->updateExistingPivot($student->id, [
+            'pass_status' => $status,
+            'completed_at' => now()
         ]);
 
-        $module = Module::findOrFail($request->module_id);
-        $module->teachers()->syncWithoutDetaching([$request->user_id]);
-
-        return redirect()->back()->with('success', 'Teacher assigned successfully!');
-    }
-    //removing teacher from assigned module 
-    public function removeTeacherFromModule($moduleId, User $teacher)
-{
-    $teacher->modules()->detach($moduleId);
-
-    return redirect()->back()->with(
-        'success',
-        'Teacher removed from module successfully!'
-    );
-}
-
-
-    // Remove teacher from module
-    public function destroy(User $user)
-    {
-        $user->modules()->detach(); // remove from module_teacher
-    
-        $user->delete(); // remove from users
-
-        return redirect()->back()->with('success', 'Teacher removed successfully!');
+        return redirect()->back()->with('success', 'Status updated!');
     }
 }

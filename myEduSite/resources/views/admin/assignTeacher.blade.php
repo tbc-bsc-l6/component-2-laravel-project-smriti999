@@ -16,12 +16,16 @@
 <form method="POST" action="{{ route('admin.addTeacher') }}">
     @csrf
     <input name="name" placeholder="Teacher Name" required>
+    <input type="email" name="email" placeholder="Teacher Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
     <button type="submit">Add</button>
 </form>
 
+<hr>
 
 <h2>All Teachers</h2>
-@if($users->count() > 0)
+@if($teachers->count() > 0)
 <table border="1" cellpadding="8" cellspacing="0">
     <thead>
         <tr>
@@ -31,16 +35,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($users as $user)
+        @foreach($teachers as $teacher)
         <tr>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
+            <td>{{ $teacher->name }}</td>
+            <td>{{ $teacher->email }}</td>
             <td>
-                <form method="POST" action="{{ route('admin.removeTeacher', $user->id) }}">
+                <form method="POST" action="{{ route('admin.removeTeacher', $teacher->id) }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Remove this teacher completely?')">Remove</button>
+                    <button onclick="return confirm('Remove this teacher completely?')">Remove</button>
                 </form>
+
             </td>
         </tr>
         @endforeach
@@ -49,8 +54,6 @@
 @else
 <p>No teachers added yet</p>
 @endif
-<hr>
-
 
 <hr>
 
@@ -64,10 +67,10 @@
         @endforeach
     </select>
 
-    <select name="user_id" required>
+    <select name="teacher_id" required>
         <option value="">Select Teacher</option>
-        @foreach($users as $user)
-            <option value="{{ $user->id }}">{{ $user->name }}</option>
+        @foreach($teachers as $teacher)
+            <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
         @endforeach
     </select>
 
@@ -83,7 +86,6 @@
         @forelse($module->teachers as $teacher)
             <li>
                 {{ $teacher->name }}
-                <!-- CORRECT ROUTE NAME -->
                 <form method="POST" action="{{ route('admin.removeTeacherFromModule', [$module->id, $teacher->id]) }}" style="display:inline">
                     @csrf
                     @method('DELETE')

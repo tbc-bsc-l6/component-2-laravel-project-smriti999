@@ -40,6 +40,21 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // Added guards for teacher, student, oldstudent
+        'teacher' => [
+            'driver' => 'session',
+            'provider' => 'teachers',
+        ],
+        'student' => [
+            'driver' => 'session',
+            'provider' => 'students',
+        ],
+        'oldstudent' => [
+            'driver' => 'session',
+            'provider' => 'oldstudents',
+        ],
+    
     ],
 
     /*
@@ -63,6 +78,20 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+
+         // Added providers for teacher, student, oldstudent
+        'teachers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Teacher::class,
+        ],
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student::class,
+        ],
+        'oldstudents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\OldStudent::class,
         ],
 
         // 'users' => [

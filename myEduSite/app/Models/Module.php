@@ -9,12 +9,24 @@ class Module extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['module'];
+    protected $fillable = ['module','is_available'];
 
-   public function teachers()
-{
-    return $this->belongsToMany(User::class, 'module_teacher', 'module_id', 'user_id');
+    // Teachers assigned
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class, 'module_teacher', 'module_id', 'teacher_id');
+    }
+
+   
+    public function students() {
+    return $this->belongsToMany(Student::class, 'module_student', 'module_id', 'student_id')
+                ->withPivot('pass_status','enrolled_at','completed_at')
+                ->withTimestamps();
 }
 
+public function oldStudents() {
+    return $this->belongsToMany(OldStudent::class, 'module_old_student', 'module_id', 'old_student_id')
+                ->withPivot('pass_status','enrolled_at','completed_at')
+                ->withTimestamps();
 }
-
+}

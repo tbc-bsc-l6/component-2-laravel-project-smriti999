@@ -3,25 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Teacher extends Model
+class Teacher extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role_id',
+    ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     public function modules()
     {
-        return $this->belongsToMany(Module::class, 'module_teacher');
-    }
-    public function module_teacher()
-    {
-        return $this->belongsTo(Teacher::class, 'id');
+        return $this->belongsToMany(Module::class, 'module_teacher', 'teacher_id', 'module_id');
     }
 }

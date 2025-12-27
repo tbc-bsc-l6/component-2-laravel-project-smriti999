@@ -12,12 +12,32 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\TeacherMiddleware;
 use App\Http\Controllers\Admin\TeacherController as AdminTeacher;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
 
 /*
 |--------------------------------------------------------------------------
 | Public Routes
 |--------------------------------------------------------------------------
 */
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', fn() => 'Admin Dashboard')->name('admin.dashboard');
+});
+
+Route::middleware(['auth', 'role:teacher'])->group(function () {
+    Route::get('/teacher/dashboard', fn() => 'Teacher Dashboard')->name('teacher.dashboard');
+});
+
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/student/dashboard', fn() => 'Student Dashboard')->name('student.dashboard');
+});
+
+Route::middleware(['auth', 'role:oldstudent'])->group(function () {
+    Route::get('/oldstudent/dashboard', fn() => 'Old Student Dashboard')->name('oldstudent.dashboard');
+});
 
 // Homepage (shows blogs)
 Route::get('/', [BlogController::class, 'index'])->name('home');
@@ -139,33 +159,69 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('modules/{module}', [ModuleController::class, 'destroy'])->name('admin.destroy');
 });  
 
-Route::prefix('admin')->group(function() {
-    Route::get('assign-teacher', [TeacherController::class, 'index'])->name('admin.assignTeacher');
-    Route::post('add-teacher', [TeacherController::class, 'store'])->name('admin.addTeacher');
-    Route::post('assign-teacher-submit', [TeacherController::class, 'assign'])->name('admin.assignTeacherSubmit');
+
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+
+    /* =========================
+       DASHBOARD
+    ========================== */
+    Route::get('/dashboard', [AdminController::class, 'index'])
+        ->name('admin.dashboard');
+
+    /* =========================
+       ASSIGN TEACHER
+    ========================== */
+    Route::get('/assign-teacher', [AdminController::class, 'assignTeacherPage'])
+        ->name('admin.assignTeacher');
+
+    Route::post('/add-teacher', [AdminController::class, 'storeTeacher'])
+        ->name('admin.addTeacher');
+
+    Route::post('/assign-teacher', [AdminController::class, 'assignTeacher'])
+        ->name('admin.assignTeacherSubmit');
+
+    /* =========================
+       CHANGE ROLE
+    ========================== */
+    Route::get('/change-role', [AdminController::class, 'changeRolePage'])
+        ->name('admin.changeRolePage');
+
+    Route::post('/change-role', [AdminController::class, 'changeRole'])
+        ->name('admin.changeRole');
+
+    /* =========================
+       REMOVE TEACHER
+    ========================== */
+Route::delete('/admin/teacher/remove/{teacherId}', [AdminController::class, 'removeTeacher'])
+    ->name('admin.removeTeacher');
+
+    Route::delete(
+        '/modules/{module}/teachers/{teacher}',
+        [AdminController::class, 'removeTeacherFromModule']
+    )->name('admin.removeTeacherFromModule');
+
     
+    /* =========================
+       TOGGLE MODULE
+    ========================== */
+    Route::patch(
+        '/modules/{module}/toggle-availability',
+        [AdminController::class, 'toggleModuleAvailability']
+    )->name('admin.toggleModuleAvailability');
+
+});
+
+Route::prefix('teacher')->middleware(['auth', 'teacher'])->name('teacher.')->group(function() {
+    Route::get('/dashboard', [TeacherController::class, 'modules'])->name('modules');
+
+    Route::get('/modules/{module}/students', [TeacherController::class, 'students'])->name('modules.students');
+
+    Route::post('/modules/{module}/students/{student}/status', [TeacherController::class, 'setStatus'])->name('modules.students.status');
 });
 
 
-//changes the roll
-Route::get('/admin/change-role', [AdminController::class, 'changeRolePage'])
-    ->name('admin.changeRolePage');
 
-Route::post('/admin/change-role', [AdminController::class, 'changeRole'])
-    ->name('admin.changeRole');
 
-Route::delete('/admin/remove-teacher/{user}', [AdminController::class, 'destroy'])->name('admin.removeTeacher');
-
-// Remove teacher from a specific module
-Route::delete(
-    '/admin/modules/{module}/teachers/{teacher}',
-    [AdminController::class, 'removeTeacherFromModule']
-)->name('admin.removeTeacherFromModule');
-
-Route::patch(
-    '/admin/modules/{module}/toggle-availability',
-    [AdminController::class, 'toggleModuleAvailability']
-)->name('admin.toggleModuleAvailability');
 
 
 });

@@ -7,12 +7,17 @@ use Illuminate\Http\Request;
 
 class AdminMiddleware
 {
+   // app/Http/Middleware/AdminMiddleware.php
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->check() && auth()->user()->hasRole('Admin')){
-            return $next($request);
+        $user = auth()->user();
+
+        // Make sure we check the correct column
+        if (!$user || !$user->role || $user->role->role !== 'Admin') {
+            abort(403, 'Unauthorized');
         }
 
-        abort(403, 'Forbidden');
+        return $next($request);
     }
+
 }

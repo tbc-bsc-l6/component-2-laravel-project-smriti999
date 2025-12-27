@@ -20,15 +20,36 @@
 </form>
 
 <h2>All Teachers</h2>
-@if($teachers->count() > 0)
-    <ul>
-        @foreach($teachers as $teacher)
-            <li>{{ $teacher->name }}</li>
+@if($users->count() > 0)
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Teacher Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($users as $user)
+        <tr>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->email }}</td>
+            <td>
+                <form method="POST" action="{{ route('admin.removeTeacher', $user->id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('Remove this teacher?')">Remove</button>
+                </form>
+            </td>
+        </tr>
         @endforeach
-    </ul>
+    </tbody>
+</table>
 @else
-    <p>No teachers added yet</p>
+<p>No teachers added yet</p>
 @endif
+<hr>
+
 
 <hr>
 

@@ -28,7 +28,7 @@ class User extends Authenticatable
     ];
 
     // Relationship: Each user belongs to one role
-    public function role(): BelongsTo
+    public function role()
     {
         return $this->belongsTo(Role::class);
     }
@@ -56,14 +56,16 @@ class User extends Authenticatable
             $q->where('name', $roleName);
         });
     }
-    public function teacher()
+   public function teacher()
 {
-    return $this->hasOne(Teacher::class);
+    return $this->hasOne(Teacher::class, 'teacher_id');
 }
+
 
 public function isTeacher(): bool
 {
     return $this->role->name === 'Teacher';
 }
+
 
 }

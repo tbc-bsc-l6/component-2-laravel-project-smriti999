@@ -153,6 +153,12 @@ Route::get('/admin/change-role', [AdminController::class, 'changeRolePage'])
 
 Route::post('/admin/change-role', [AdminController::class, 'changeRole'])
     ->name('admin.changeRole');
+
+    //admin delete the teacher
+Route::delete(
+    '/admin/remove-teacher/{user}',
+    [TeacherController::class, 'destroy']
+)->name('admin.removeTeacher');
 });
 /*
 |--------------------------------------------------------------------------

@@ -51,6 +51,18 @@ class TeacherController extends Controller
 
         return redirect()->back()->with('success', 'Teacher added successfully!');
     }
+    //admin delete the teacher 
+    public function removeTeacher(User $user)
+        {
+            // detach teacher from all modules
+            $user->modules()->detach();
+
+            // delete teacher user
+            $user->delete();
+
+            return back()->with('success', 'Teacher removed successfully.');
+        }
+
 
     // Assign teacher to module
     public function assign(Request $request)
@@ -70,6 +82,7 @@ class TeacherController extends Controller
     public function destroy(User $user)
     {
         $user->modules()->detach(); // remove from module_teacher
+    
         $user->delete(); // remove from users
 
         return redirect()->back()->with('success', 'Teacher removed successfully!');

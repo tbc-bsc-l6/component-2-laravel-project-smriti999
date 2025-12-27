@@ -77,6 +77,17 @@ class TeacherController extends Controller
 
         return redirect()->back()->with('success', 'Teacher assigned successfully!');
     }
+    //removing teacher from assigned module 
+    public function removeTeacherFromModule($moduleId, User $teacher)
+{
+    $teacher->modules()->detach($moduleId);
+
+    return redirect()->back()->with(
+        'success',
+        'Teacher removed from module successfully!'
+    );
+}
+
 
     // Remove teacher from module
     public function destroy(User $user)

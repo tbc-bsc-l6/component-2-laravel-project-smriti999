@@ -19,6 +19,7 @@
     <button type="submit">Add</button>
 </form>
 
+
 <h2>All Teachers</h2>
 @if($users->count() > 0)
 <table border="1" cellpadding="8" cellspacing="0">
@@ -38,7 +39,7 @@
                 <form method="POST" action="{{ route('admin.removeTeacher', $user->id) }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Remove this teacher?')">Remove</button>
+                    <button type="submit" onclick="return confirm('Remove this teacher completely?')">Remove</button>
                 </form>
             </td>
         </tr>
@@ -82,10 +83,11 @@
         @forelse($module->teachers as $teacher)
             <li>
                 {{ $teacher->name }}
-                <form method="POST" action="{{ route('admin.removeTeacher', [$module->id, $teacher->id]) }}" style="display:inline">
+                <!-- CORRECT ROUTE NAME -->
+                <form method="POST" action="{{ route('admin.removeTeacherFromModule', [$module->id, $teacher->id]) }}" style="display:inline">
                     @csrf
                     @method('DELETE')
-                    <button>Remove</button>
+                    <button onclick="return confirm('Remove this teacher from this module?')">Remove</button>
                 </form>
             </li>
         @empty
@@ -93,4 +95,5 @@
         @endforelse
     </ul>
 @endforeach
+
 @endsection

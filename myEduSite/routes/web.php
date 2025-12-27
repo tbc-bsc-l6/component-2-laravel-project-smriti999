@@ -143,7 +143,7 @@ Route::prefix('admin')->group(function() {
     Route::get('assign-teacher', [TeacherController::class, 'index'])->name('admin.assignTeacher');
     Route::post('add-teacher', [TeacherController::class, 'store'])->name('admin.addTeacher');
     Route::post('assign-teacher-submit', [TeacherController::class, 'assign'])->name('admin.assignTeacherSubmit');
-    Route::delete('remove-teacher/{user}', [TeacherController::class, 'destroy'])->name('admin.removeTeacher');
+    
 });
 
 
@@ -154,11 +154,13 @@ Route::get('/admin/change-role', [AdminController::class, 'changeRolePage'])
 Route::post('/admin/change-role', [AdminController::class, 'changeRole'])
     ->name('admin.changeRole');
 
-    //admin delete the teacher
+Route::delete('/admin/remove-teacher/{user}', [AdminController::class, 'destroy'])->name('admin.removeTeacher');
+
+// Remove teacher from a specific module
 Route::delete(
-    '/admin/remove-teacher/{user}',
-    [TeacherController::class, 'destroy']
-)->name('admin.removeTeacher');
+    '/admin/modules/{module}/teachers/{teacher}',
+    [AdminController::class, 'removeTeacherFromModule']
+)->name('admin.removeTeacherFromModule');
 });
 /*
 |--------------------------------------------------------------------------

@@ -39,4 +39,20 @@ class AdminController extends Controller
 
         return back()->with('success', 'User role updated successfully');
     }
+
+     // Remove teacher from a module only
+    public function removeTeacherFromModule(Module $module, User $teacher)
+    {
+        $teacher->modules()->detach($module->id);
+        return redirect()->back()->with('success', 'Teacher removed from module successfully!');
+    }
+
+    // Remove teacher completely
+    public function destroy(User $user)
+    {
+        $user->modules()->detach();
+        $user->delete();
+        return redirect()->back()->with('success', 'Teacher removed successfully!');
+    }
+
 }

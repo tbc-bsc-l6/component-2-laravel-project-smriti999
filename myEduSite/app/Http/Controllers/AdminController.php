@@ -55,4 +55,13 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Teacher removed successfully!');
     }
 
+    public function toggleModuleAvailability(Module $module)
+{
+    $module->is_available = !$module->is_available; // toggle true/false
+    $module->save();
+
+    $status = $module->is_available ? 'available' : 'unavailable';
+    return redirect()->back()->with('success', "Module '{$module->module}' is now {$status}.");
+}
+
 }

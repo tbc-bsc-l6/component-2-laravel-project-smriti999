@@ -161,6 +161,13 @@ Route::delete(
     '/admin/modules/{module}/teachers/{teacher}',
     [AdminController::class, 'removeTeacherFromModule']
 )->name('admin.removeTeacherFromModule');
+
+Route::patch(
+    '/admin/modules/{module}/toggle-availability',
+    [AdminController::class, 'toggleModuleAvailability']
+)->name('admin.toggleModuleAvailability');
+
+
 });
 /*
 |--------------------------------------------------------------------------

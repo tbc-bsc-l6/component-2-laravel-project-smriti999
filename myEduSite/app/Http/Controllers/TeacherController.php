@@ -1,42 +1,40 @@
 <?php
+// app/Http/Controllers/TeacherDashboardController.php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Teacher;
 use App\Models\Module;
-use App\Models\User;
+use App\Models\Student;
 
 class TeacherController extends Controller
 {
-    // Show teacher dashboard with assigned modules
-    public function modules()
+    // Show dashboard
+    public function index()
     {
-        $teacher = Auth::user();
+        // Assume the teacher is fixed or you get the first one
+        $teacher = Teacher::first();  // replace with your logic if you want specific teacher
 
-        // Get assigned modules with students
+        // Load modules with students
         $modules = $teacher->modules()->with('students')->get();
 
-        return view('teacher.dashboard', compact('modules'));
+        return view('teacher.dashboard', compact('teacher', 'modules'));
     }
 
-    // Show students of a module
-    public function students(Module $module)
+    // Set PASS / FAIL for a student in a module
+    public function setResult(Request $request, Module $module, Student $student)
     {
-        $students = $module->students; // pivot includes pass_status, completed_at
-        return view('teacher.students', compact('module', 'students'));
-    }
+        $request->validate([
+            'result' => 'required|in:PASS,FAIL',
+        ]);
 
-    // Set PASS / FAIL for a student
-    public function setStatus(Request $request, Module $module, User $student)
-    {
-        $status = $request->input('pass_status'); // 'PASS' or 'FAIL'
-
-        $module->students()->updateExistingPivot($student->id, [
-            'pass_status' => $status,
+        // Attach result with timestamp
+        $student->modules()->updateExistingPivot($module->id, [
+            'result' => $request->result,
             'completed_at' => now()
         ]);
 
-        return redirect()->back()->with('success', 'Status updated!');
+        return back()->with('success', 'Result updated successfully.');
     }
 }

@@ -13,7 +13,7 @@ use App\Http\Middleware\TeacherMiddleware;
 use App\Http\Controllers\Admin\TeacherController as AdminTeacher;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-
+use App\Http\Controllers\OldStudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,21 +23,27 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', fn() => 'Admin Dashboard')->name('admin.dashboard');
-});
 
-Route::middleware(['auth', 'role:teacher'])->group(function () {
-    Route::get('/teacher/dashboard', fn() => 'Teacher Dashboard')->name('teacher.dashboard');
-});
 
-Route::middleware(['auth', 'role:student'])->group(function () {
-    Route::get('/student/dashboard', fn() => 'Student Dashboard')->name('student.dashboard');
-});
 
-Route::middleware(['auth', 'role:oldstudent'])->group(function () {
-    Route::get('/oldstudent/dashboard', fn() => 'Old Student Dashboard')->name('oldstudent.dashboard');
-});
+// Teacher routes
+// routes/web.php
+
+use App\Http\Controllers\TeacherDashboardController;
+
+Route::get('/teacher/dashboard', [TeacherController::class, 'index'])->name('teacher.dashboard');
+Route::post('/teacher/module/{module}/student/{student}/set-result', [TeacherController::class, 'setResult'])->name('teacher.setResult');
+
+
+Route::get('/student/dashboard', [StudentController::class, 'index'])
+    ->middleware('role:student');
+
+Route::get('/oldstudent/dashboard', [OldStudentController::class, 'index'])
+    ->middleware('role:oldstudent');
+
+Route::get('/admin/dashboard', [AdminController::class, 'index'])
+    ->middleware('role:web'); // web = admin
+
 
 // Homepage (shows blogs)
 Route::get('/', [BlogController::class, 'index'])->name('home');

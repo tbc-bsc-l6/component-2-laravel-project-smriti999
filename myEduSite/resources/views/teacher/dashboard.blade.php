@@ -1,39 +1,32 @@
-@extends('teacher.layout')
-
-@section('title','Teacher Dashboard')
+@extends('layouts.app')
 
 @section('content')
-<h1>Teacher Dashboard</h1>
+<h1>Welcome, {{ $teacher->name }}</h1>
 
-@if(session('success'))
-    <p style="color:green">{{ session('success') }}</p>
-@endif
-
-<h2>Modules Assigned</h2>
-@if($modules->count() > 0)
-    <table border="1" cellpadding="8" cellspacing="0" style="width:100%; margin-top:10px;">
-        <thead>
-            <tr>
-                <th>Module Name</th>
-                <th>Description</th>
-                <th>Assigned Students</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($modules as $module)
-            <tr>
-                <td>{{ $module->module }}</td>
-                <td>{{ $module->description ?? 'N/A' }}</td>
-                <td>
-                    <a href="{{ route('teacher.modules.students', $module->id) }}">
-                        View Students ({{ $module->students->count() }})
-                    </a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
+@foreach($modules as $module)
+    <h3>{{ $module->name }}</h3>
+    <table border="1">
+        <tr>
+            <th>Student</th>
+            <th>Result</th>
+            <th>Action</th>
+        </tr>
+        @foreach($module->students as $student)
+        <tr>
+            <td>{{ $student->name }}</td>
+            <td>{{ $student->pivot->result ?? 'Not Set' }}</td>
+            <td>
+                <form method="POST" action="{{ route('teacher.setResult', ['module' => $module->id, 'student' => $student->id]) }}">
+                    @csrf
+                    <select name="result">
+                        <option value="PASS">PASS</option>
+                        <option value="FAIL">FAIL</option>
+                    </select>
+                    <button type="submit">Set</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
     </table>
-@else
-    <p>No modules assigned yet.</p>
-@endif
+@endforeach
 @endsection

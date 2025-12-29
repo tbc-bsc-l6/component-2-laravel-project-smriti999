@@ -43,8 +43,8 @@ return [
 
         // Added guards for teacher, student, oldstudent
         'teacher' => [
-            'driver' => 'session',
-            'provider' => 'teachers',
+        'driver' => 'session',
+        'provider' => 'teachers',
         ],
         'student' => [
             'driver' => 'session',
@@ -82,8 +82,8 @@ return [
 
          // Added providers for teacher, student, oldstudent
         'teachers' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Teacher::class,
+        'driver' => 'eloquent',
+        'model' => App\Models\Teacher::class,
         ],
         'students' => [
             'driver' => 'eloquent',

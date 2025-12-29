@@ -60,30 +60,37 @@ class AdminController extends Controller
     return view('admin.assignTeacher', compact('modules', 'teachers'));
 }
 //store teacher
+
 public function storeTeacher(Request $request)
 {
     $request->validate([
         'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:teachers,email',
-        'password' => 'required|string|min:6|confirmed',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6',
     ]);
 
-    // Use user_roles table
-    $teacherRole = \DB::table('user_roles')->where('role', 'Teacher')->first();
+    \DB::transaction(function() use ($request) {
+        // Create User
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'user_role_id' => 2, // teacher role
+        ]);
 
-    if (!$teacherRole) {
-        return back()->with('error', 'Teacher role not found!');
-    }
+        // Create Teacher linked to that User
+        Teacher::create([
+            'user_id' => $user->id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role_id' => 2, // teacher role
+        ]);
+    });
 
-    Teacher::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'role_id' => $teacherRole->id,
-    ]);
-
-    return back()->with('success', 'Teacher added successfully!');
+    return back()->with('success', 'Teacher created successfully!');
 }
+
 
 
     /* =========================

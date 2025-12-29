@@ -6,26 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');                 // Teacher name
-            $table->string('email')->unique();      // Teacher email
-            $table->string('password');             // Password
-            $table->foreignId('role_id')            // Link to user_roles table
-                  ->constrained('user_roles')
-                  ->cascadeOnDelete();
+
+            // Foreign key to users table
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->foreignId('role_id')->constrained('user_roles')->cascadeOnDelete();
+
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('teachers');

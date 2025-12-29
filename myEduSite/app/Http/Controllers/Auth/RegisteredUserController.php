@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
-
+use App\Models\Student;
+use Illuminate\Support\Facades\DB;
 class RegisteredUserController extends Controller
 {
     /**
@@ -27,24 +28,36 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+    public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|confirmed|min:6',
+    ]);
 
+    DB::transaction(function() use ($request) {
+
+       
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'user_role_id' => 3, 
         ]);
 
-        event(new Registered($user));
+        
+        Student::create([ 
+            'user_id' => $user->id,   
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), 
 
-        Auth::login($user);
+             
+        ]);
 
-        return redirect(route('dashboard', absolute: false));
-    }
+    });
+
+    return redirect()->route('login')->with('success', 'Registration successful! Please login.');
+}
 }

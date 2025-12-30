@@ -43,23 +43,17 @@ Route::middleware(['auth:teacher', 'teacher'])->group(function () {
         ->name('teacher.modules.students.status');
 });
 
+//
 
 
-// Student Routes
-Route::middleware(['auth:student', 'student'])->group(function () {
-    Route::get('student/dashboard', [StudentController::class, 'dashboard'])
-        ->name('student.dashboard');
-
-    Route::post('student/enroll/{module}', [StudentController::class, 'enroll'])
-        ->name('student.enroll');
+Route::middleware('auth:student')->group(function() {
+    Route::get('student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    Route::post('student/enroll/{module_id}', [StudentController::class, 'enroll'])->name('student.enroll');
 });
 
-// Old Student Routes
 Route::middleware(['auth:oldstudent', 'oldstudent'])->group(function () {
-    Route::get('oldstudent/dashboard', [OldStudentController::class, 'dashboard'])
-        ->name('oldstudent.dashboard');
+    Route::get('oldstudent/dashboard', [OldStudentController::class, 'dashboard'])->name('oldstudent.dashboard');
 });
-
 
 //admin dashboard
 Route::get('/admin/dashboard', [AdminController::class, 'index'])

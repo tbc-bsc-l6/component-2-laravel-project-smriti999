@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,9 +10,11 @@ class OldStudent extends Authenticatable
 
     protected $fillable = ['name', 'email', 'password'];
     protected $hidden = ['password','remember_token'];
-    public function modules() {
-        return $this->belongsToMany(Module::class, 'module_old_student', 'old_student_id', 'module_id')
-                    ->withPivot('pass_status','enrolled_at','completed_at')
+
+    public function modules()
+    {
+        return $this->belongsToMany(Module::class, 'module_student')
+                    ->withPivot('status','enrolled_at','completed_at')
                     ->withTimestamps();
     }
 }

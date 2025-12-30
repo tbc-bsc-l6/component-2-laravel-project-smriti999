@@ -3,41 +3,40 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Module;
-use App\Models\User;
 
 class StudentController extends Controller
 {
-    // Dashboard: show current and completed modules
-    public function index()
+    public function dashboard()
     {
-        $user = auth()->user();
-        $current = $user->modules()->wherePivotNull('completed_at')->get();
-        $completed = $user->modules()->wherePivotNotNull('completed_at')->get();
+        $student = Auth::guard('student')->user();
 
-        return view('student.dashboard', compact('current','completed'));
+        // Modules already enrolled
+        $enrolledModules = $student->modules;
+
+        // Completed modules (with PASS/FAIL)
+        $completedModules = $enrolledModules->whereNotNull('pivot.status');
+
+        // Available modules to enroll (max 4)
+        $availableModules = Module::where('is_available', 1)
+            ->whereNotIn('id', $enrolledModules->pluck('id'))
+            ->take(max(0, 4 - $enrolledModules->count()))
+            ->get();
+
+        return view('student.dashboard', compact('student', 'enrolledModules', 'completedModules', 'availableModules'));
     }
 
-    // Enroll in a module
-    public function enroll($module_id)
+    public function enroll(Request $request, Module $module)
     {
-        $user = auth()->user();
-        $module = Module::findOrFail($module_id);
+        $student = Auth::guard('student')->user();
 
-        // Check max 4 modules
-        $currentCount = $user->modules()->wherePivotNull('completed_at')->count();
-        if ($currentCount >= 4) {
-            return back()->withErrors('You cannot enroll in more than 4 modules.');
+        if ($student->modules()->count() >= 4) {
+            return back()->with('error', 'Maximum of 4 modules can be enrolled.');
         }
 
-        // Check module max 10 students
-        $moduleCount = $module->students()->wherePivotNull('completed_at')->count();
-        if ($moduleCount >= 10) {
-            return back()->withErrors('Module is full.');
-        }
+        $student->modules()->attach($module->id, ['enrolled_at' => now()]);
 
-        $user->modules()->attach($module_id, ['enrolled_at'=>now()]);
-
-        return back()->with('success','Enrolled successfully!');
+        return back()->with('success', "Enrolled in module: {$module->module}");
     }
 }

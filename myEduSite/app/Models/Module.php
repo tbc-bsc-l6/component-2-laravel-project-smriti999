@@ -18,11 +18,12 @@ class Module extends Model
     }
 
    
-    public function students() {
-    return $this->belongsToMany(Student::class, 'module_student', 'module_id', 'student_id')
-                ->withPivot('pass_status','enrolled_at','completed_at')
-                ->withTimestamps();
-}
+  public function students()
+    {
+        return $this->belongsToMany(Student::class, 'module_student')
+                    ->withPivot('status','enrolled_at','completed_at')
+                    ->withTimestamps();
+    }
 
 public function oldStudents() {
     return $this->belongsToMany(OldStudent::class, 'module_old_student', 'module_id', 'old_student_id')

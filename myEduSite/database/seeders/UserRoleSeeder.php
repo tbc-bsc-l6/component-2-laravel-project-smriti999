@@ -2,21 +2,22 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\UserRole;
+
 class UserRoleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        UserRole::insert([
-    ['name'=>'Admin'],
-    ['name'=>'Teacher'],
-    ['name'=>'Student'],
-    ['role' => 'Old Student'],
-]);
+        $roles = ['admin', 'teacher', 'student', 'oldstudent'];
+
+        foreach ($roles as $role) {
+            UserRole::updateOrInsert(
+                ['role' => $role],
+                ['role' => $role]
+            );
+        }
+
+        $this->command->info("User roles seeded successfully.");
     }
 }

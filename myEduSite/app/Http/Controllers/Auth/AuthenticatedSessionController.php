@@ -1,10 +1,15 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Teacher;
+use App\Models\Student;
+use App\Models\OldStudent;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -21,59 +26,53 @@ class AuthenticatedSessionController extends Controller
             'role' => 'required|string',
         ]);
 
-        $role = $request->role;
+        $role = strtolower($request->role);
         $email = $request->email;
         $password = $request->password;
 
-        $guard = null;
         $user = null;
+        $guard = 'web';
 
-        // Determine guard and user table
+        // Match user and guard
         switch ($role) {
             case 'admin':
+                $user = User::where('email', $email)->first();
                 $guard = 'web';
-                $user = \App\Models\User::where('email', $email)->first();
                 break;
-
             case 'teacher':
+                $user = Teacher::where('email', $email)->first();
                 $guard = 'teacher';
-                $user = \App\Models\Teacher::where('email', $email)->first();
                 break;
-
             case 'student':
+                $user = Student::where('email', $email)->first();
                 $guard = 'student';
-                $user = \App\Models\Student::where('email', $email)->first();
                 break;
-
             case 'oldstudent':
+                $user = OldStudent::where('email', $email)->first();
                 $guard = 'oldstudent';
-                $user = \App\Models\OldStudent::where('email', $email)->first();
                 break;
+            default:
+                return back()->withErrors(['role' => 'Invalid role selected']);
         }
 
         if (!$user || !Hash::check($password, $user->password)) {
-            return back()->withErrors(['email' => 'Invalid credentials']);
+            return back()->withErrors(['email' => 'Invalid credentials for this role']);
         }
 
-        // Login using the correct guard
         Auth::guard($guard)->login($user);
+        $request->session()->regenerate();
 
-        // Redirect based on role
-        switch ($role) {
-            case 'admin':
-                return redirect()->route('admin.dashboard');
-            case 'teacher':
-                return redirect()->route('teacher.modules');
-            case 'student':
-                return redirect()->route('student.dashboard');
-            case 'oldstudent':
-                return redirect()->route('oldstudent.dashboard');
-        }
+        // Redirect by role
+        return match($role) {
+            'admin' => redirect()->route('admin.dashboard'),
+            'teacher' => redirect()->route('teacher.dashboard'),
+            'student' => redirect()->route('student.dashboard'),
+            'oldstudent' => redirect()->route('oldstudent.dashboard'),
+        };
     }
 
     public function destroy(Request $request)
     {
-        // Logout from all guards
         Auth::guard('web')->logout();
         Auth::guard('teacher')->logout();
         Auth::guard('student')->logout();

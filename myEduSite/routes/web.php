@@ -29,18 +29,39 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 // Teacher routes
 // routes/web.php
 
-use App\Http\Controllers\TeacherDashboardController;
+Route::middleware(['auth:teacher', 'teacher'])->group(function () {
+    // Dashboard route
+    Route::get('teacher/dashboard', [TeacherController::class, 'modules'])
+        ->name('teacher.dashboard'); // <- change from teacher.modules
 
-Route::get('/teacher/dashboard', [TeacherController::class, 'index'])->name('teacher.dashboard');
-Route::post('/teacher/module/{module}/student/{student}/set-result', [TeacherController::class, 'setResult'])->name('teacher.setResult');
+    // Students of a module
+    Route::get('teacher/modules/{module}/students', [TeacherController::class, 'students'])
+        ->name('teacher.modules.students');
+
+    // Mark PASS/FAIL
+    Route::post('teacher/modules/{module}/students/{student}/status', [TeacherController::class, 'markStatus'])
+        ->name('teacher.modules.students.status');
+});
 
 
-Route::get('/student/dashboard', [StudentController::class, 'index'])
-    ->middleware('role:student');
 
-Route::get('/oldstudent/dashboard', [OldStudentController::class, 'index'])
-    ->middleware('role:oldstudent');
+// Student Routes
+Route::middleware(['auth:student', 'student'])->group(function () {
+    Route::get('student/dashboard', [StudentController::class, 'dashboard'])
+        ->name('student.dashboard');
 
+    Route::post('student/enroll/{module}', [StudentController::class, 'enroll'])
+        ->name('student.enroll');
+});
+
+// Old Student Routes
+Route::middleware(['auth:oldstudent', 'oldstudent'])->group(function () {
+    Route::get('oldstudent/dashboard', [OldStudentController::class, 'dashboard'])
+        ->name('oldstudent.dashboard');
+});
+
+
+//admin dashboard
 Route::get('/admin/dashboard', [AdminController::class, 'index'])
     ->middleware('role:web'); // web = admin
 
@@ -128,26 +149,11 @@ Route::prefix('admin')->middleware([AdminMiddleware::class])->group(function () 
 
 /*
 |--------------------------------------------------------------------------
-| Teacher Routes
-|--------------------------------------------------------------------------
-*/
-
-Route::prefix('teacher')->middleware([TeacherMiddleware::class])->group(function() {
-    Route::get('/dashboard', [TeacherController::class,'index']);
-    Route::get('/module/{module}/students', [TeacherController::class,'students']);
-    Route::post('/module/{module}/student/{student}/status', [TeacherController::class,'markStatus']);
-});
-
-/*
-|--------------------------------------------------------------------------
 | Student Routes
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth'])->prefix('student')->group(function () {
-    Route::get('/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
-    Route::post('/enroll/{module_id}', [StudentController::class, 'enroll'])->name('student.enroll');
-});
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/modules/create', [ModuleController::class, 'create'])
@@ -216,19 +222,6 @@ Route::delete('/admin/teacher/remove/{teacherId}', [AdminController::class, 'rem
     )->name('admin.toggleModuleAvailability');
 
 });
-
-Route::prefix('teacher')->middleware(['auth', 'teacher'])->name('teacher.')->group(function() {
-    Route::get('/dashboard', [TeacherController::class, 'modules'])->name('modules');
-
-    Route::get('/modules/{module}/students', [TeacherController::class, 'students'])->name('modules.students');
-
-    Route::post('/modules/{module}/students/{student}/status', [TeacherController::class, 'setStatus'])->name('modules.students.status');
-});
-
-
-
-
-
 
 });
 /*

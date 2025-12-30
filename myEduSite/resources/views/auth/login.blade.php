@@ -27,7 +27,7 @@
             <x-input-label for="role" value="Role" />
             <select name="role"
                     class="block mt-1 w-full rounded border-gray-300">
-                <option value="admin">Administrator</option>
+                <option value="admin">Admin</option>
                 <option value="student">Student</option>
                 <option value="teacher">Teacher</option>
                 <option value="oldstudent">Old Student</option>

@@ -6,14 +6,13 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TeacherMiddleware
+class StudentMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::guard('teacher')->check()) {
-            abort(403, 'Unauthorized: Teacher role required.');
+        if (Auth::guard('student')->check()) {
+            return $next($request);
         }
-
-        return $next($request);
+        abort(403, 'Unauthorized: Student role required.');
     }
 }

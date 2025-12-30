@@ -10,20 +10,24 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        $adminRole = DB::table('user_roles')->where('role', 'Admin')->first();
+        $adminRoleId = DB::table('user_roles')->where('role', 'admin')->value('id');
 
-        if (!$adminRole) {
-            $this->command->info('Admin role not found! Please run RoleSeeder first.');
+        if (!$adminRoleId) {
+            $this->command->info('Admin role not found! Please run UserRoleSeeder first.');
             return;
         }
 
-        DB::table('users')->insert([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('password'),
-            'user_role_id' => $adminRole->id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        DB::table('users')->updateOrInsert(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name' => 'Admin',
+                'password' => Hash::make('password'),
+                'user_role_id' => $adminRoleId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        $this->command->info("Admin user created or updated: admin@gmail.com / password");
     }
 }

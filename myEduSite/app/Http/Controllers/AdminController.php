@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserRole;
 use App\Models\Role;
 use App\Models\Module;
 use App\Models\Teacher;
+use App\Models\Student;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -25,27 +27,92 @@ class AdminController extends Controller
     /* =========================
        CHANGE USER ROLE
     ========================== */
-    public function changeRolePage()
+public function changeRolePage()
     {
-        $users = User::with('role')->get();
-        $roles = Role::all();
+        // Eager load userRole relationship
+        $users = User::with('userRole')->get();
+        $roles = UserRole::all();
 
         return view('admin.changeRole', compact('users', 'roles'));
     }
 
-    public function changeRole(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'role_id' => 'required|exists:roles,id',
-        ]);
+public function changeRole(Request $request)
+{
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'role_id' => 'required|exists:user_roles,id',
+    ]);
 
-        $user = User::findOrFail($request->user_id);
-        $user->role_id = $request->role_id;
-        $user->save();
+    $user = User::findOrFail($request->user_id);
+    $oldRole = optional($user->userRole)->role;
+    $newRole = UserRole::findOrFail($request->role_id)->role;
 
-        return back()->with('success', 'User role updated successfully');
+    // Prevent teacher from becoming oldstudent
+    if ($oldRole === 'teacher' && $newRole === 'oldstudent') {
+        return back()->with('error', 'Teacher cannot be changed into Old Student.');
     }
+
+    // Update role in users table
+    $user->user_role_id = $request->role_id;
+    $user->save();
+
+    // Remove old role records
+    if ($oldRole === 'teacher' && $user->teacher) {
+        $user->teacher->delete();
+    }
+    if ($oldRole === 'student' && $user->student) {
+        $user->student->delete();
+    }
+    if ($oldRole === 'oldstudent' && $user->oldStudent) {
+        $user->oldStudent->delete();
+    }
+
+    // Create new role record
+    switch ($newRole) {
+        case 'teacher':
+            if (!$user->teacher) {
+                \App\Models\Teacher::create([
+                    'user_id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'password' => $user->password,
+                    'role_id' => $user->user_role_id,
+                ]);
+            }
+            break;
+
+        case 'student':
+            \App\Models\Student::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'password' => $user->password,
+                ]
+            );
+            break;
+
+        case 'oldstudent':
+            \App\Models\OldStudent::updateOrCreate(
+    ['user_id' => $user->id], // find existing record by user_id
+                    [
+                        'user_id' => $user->id,   // MUST be included for insert
+                        'name'    => $user->name,
+                        'email'   => $user->email,
+                        'password'=> $user->password,
+                    ]
+                );
+            break;
+    }
+
+    return back()->with('success', "User role changed from {$oldRole} to {$newRole} successfully.");
+}
+
+
+
+
+
+
 
     /* =========================
        ASSIGN TEACHER PAGE

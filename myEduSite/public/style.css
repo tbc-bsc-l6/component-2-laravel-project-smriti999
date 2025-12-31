@@ -289,7 +289,7 @@ body {
 
 .about-container h2 {
     font-size: 30px;
-    color: #145c2a;
+    color: rgb(245, 195, 203);
     margin-top: 45px;
     margin-bottom: 20px;
 }
@@ -312,3 +312,63 @@ body {
     color: rgb(245, 195, 203);
     font-weight: bold;
 }
+
+
+
+/* 
+courses box */
+.programme-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 🔴 FORCE 4 PER ROW */
+.programme-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* EXACTLY 4 */
+    gap: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .programme-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .programme-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.programme-box {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.programme-box img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.programme-title {
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.programme-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+

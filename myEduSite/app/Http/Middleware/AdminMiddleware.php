@@ -7,17 +7,18 @@ use Illuminate\Http\Request;
 
 class AdminMiddleware
 {
-   // app/Http/Middleware/AdminMiddleware.php
     public function handle(Request $request, Closure $next)
     {
-        $user = auth()->user();
+        // Check if user is logged in
+        if (!auth()->check()) {
+            return redirect('/login');
+        }
 
-        // Make sure we check the correct column
-        if (!$user || !$user->role || $user->role->role !== 'Admin') {
-            abort(403, 'Unauthorized');
+        // Check if user_role_id = 1 (Admin)
+        if (auth()->user()->user_role_id != 1) {
+            abort(403); // Not admin
         }
 
         return $next($request);
     }
-
 }

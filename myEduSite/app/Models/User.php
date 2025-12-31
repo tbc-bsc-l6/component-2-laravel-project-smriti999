@@ -23,9 +23,9 @@ class User extends Authenticatable
     ];
 
     // Role relationship
-    public function role()
+     public function userRole()
     {
-        return $this->belongsTo(Role::class, 'user_role_id');
+        return $this->belongsTo(UserRole::class, 'user_role_id');
     }
      public function student()
     {
@@ -36,6 +36,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(Teacher::class);
     }
+
+    public function oldStudent()
+{
+    return $this->hasOne(OldStudent::class, 'user_id');
+}
 
     public function modules()
     {

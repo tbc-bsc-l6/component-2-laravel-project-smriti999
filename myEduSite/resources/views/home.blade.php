@@ -1,26 +1,32 @@
 @extends('layouts.app')
 @section('content')
 
-<!-- FULL SCREEN IMAGE -->
-<section class="w-full h-screen">
-    <img src="{{ asset('images/home1.png') }}" alt="Rose School" class="w-full h-full object-cover">
-</section>
+
 
 <!-- ABOUT PREVIEW -->
 <section class="about-preview">
-    <div class="container">
+    <div class="container" style="text-align: center;">
         <div class="about-text">
-            <h1 class="about-title" style="color: rgb(245, 195, 203);">The Rose College</h1>
-            <p class="about-paragraph" style="color: rgb(245, 195, 203);">
-                The Rose College stands out for its exceptional academic programs, highly qualified faculty, 
+            <h1 style="font-size: 32px;">
+                The Rose College
+            </h1></br>
+
+            <p style="font-size: 18px; max-width: 700px; margin: 0 auto;">
+                The Rose College stands out for its exceptional academic programs, highly qualified faculty,
                 and a nurturing environment that fosters growth, creativity, and leadership in every student.
             </p>
-            <a href="{{ route('about') }}" style="color: white; background-color: rgb(245, 195, 203); padding: 8px 16px; border-radius: 6px; display: inline-block; text-decoration: none;">
+
+            <br>
+
+            <a href="{{ route('about') }}" style="font-weight: bold;">
                 Learn More
-            </a> 
+            </a>
         </div>
     </div>
 </section>
+
+
+
 
 <!-- BLOG SECTION -->
 <section class="py-16" style="background-color: #f5f5f5;">
@@ -62,16 +68,21 @@
 <br><br>
 
 <!-- CALL TO ACTION -->
-<section style="background-color: rgba(246, 168, 181, 1); color: white; text-align: center; padding: 4rem 0;">
-    <h2 class="text-3xl font-bold mb-4" style="color: white;">
+<section style="text-align: center;">
+    <h2 style="font-size: 28px;">
         Enroll Your Child at The Rose School
     </h2>
-    <p class="mb-6" style="color: white;">
+
+    <p style="font-size: 18px;">
         Building a strong foundation for lifelong learning.
-    </p>
-    <a href="{{ route('contact') }}" style="color: rgba(246, 184, 194, 1); background-color: white; padding: 12px 24px; border-radius: 8px; display: inline-block; text-decoration: none; font-weight: 600;">
+    </p></br>
+
+    <a href="{{ route('contact') }}" style="font-weight: bold;">
         Contact Us
     </a>
 </section>
+
+
+
 
 @endsection

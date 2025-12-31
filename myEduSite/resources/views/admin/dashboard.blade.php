@@ -22,10 +22,9 @@
         <td>{{ $module->teacher?->name ?? 'None' }}</td>
         <td>{{ $module->is_available ? 'Yes' : 'No' }}</td>
         <td>
-            <form action="{{ route('modules.toggle', $module->id) }}" method="POST" style="display:inline">
+            <form action="{{ route('admin.modules.toggle', $module->id) }}" method="POST">
                 @csrf
-                @method('PUT')
-                <button type="submit">Toggle</button>
+                @method('PATCH')
             </form>
         </td>
     </tr>

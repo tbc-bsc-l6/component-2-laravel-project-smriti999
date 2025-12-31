@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard - MyEduSite</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 <body>
     <nav>
@@ -21,7 +20,6 @@
             @csrf
         </form>
     </nav>
-
     <hr>
 
     <div class="container">

@@ -8,13 +8,18 @@ class OldStudent extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['user_id','name', 'email', 'password'];
     protected $hidden = ['password','remember_token'];
 
     public function modules()
-    {
-        return $this->belongsToMany(Module::class, 'module_student')
-                    ->withPivot('status','enrolled_at','completed_at')
-                    ->withTimestamps();
-    }
+{
+    return $this->belongsToMany(Module::class)
+        ->withPivot(['status', 'enrolled_at', 'completed_at'])
+        ->withTimestamps();
+}
+
+    public function user()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
 }

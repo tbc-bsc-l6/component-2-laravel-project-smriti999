@@ -33,7 +33,7 @@
 
         @yield('content')
     </main>
-
+<a href="{{ route('about') }}
 </div>
 
 </body>

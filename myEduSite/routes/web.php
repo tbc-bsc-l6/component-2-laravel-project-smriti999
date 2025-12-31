@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Student\DashboardController;
+use App\Http\Controllers\Student\EnrollmentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Blog;
@@ -7,13 +9,20 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ModuleController;
-use App\Http\Controllers\StudentController;
+use App\Http\Controllers\Student\ModuleController as StudentModuleController;
+use App\Http\Controllers\Student\StudentController;
+
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\TeacherMiddleware;
 use App\Http\Controllers\Admin\TeacherController as AdminTeacher;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\OldStudentController;
+use App\Http\Controllers\OldStudent\DashboardController as OldStudentDashboardController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,38 +35,22 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 
 
-// Teacher routes
-// routes/web.php
 
-Route::middleware(['auth:teacher', 'teacher'])->group(function () {
-    // Dashboard route
-    Route::get('teacher/dashboard', [TeacherController::class, 'modules'])
-        ->name('teacher.dashboard'); // <- change from teacher.modules
+Route::middleware(['auth:oldstudent'])
+    ->prefix('old-student')
+    ->name('oldstudent.')
+    ->group(function () {
 
-    // Students of a module
-    Route::get('teacher/modules/{module}/students', [TeacherController::class, 'students'])
-        ->name('teacher.modules.students');
+        Route::get('/dashboard', [OldStudentDashboardController::class, 'index'])
+            ->name('dashboard');
 
-    // Mark PASS/FAIL
-    Route::post('teacher/modules/{module}/students/{student}/status', [TeacherController::class, 'markStatus'])
-        ->name('teacher.modules.students.status');
-});
+    });
 
-//
-
-
-Route::middleware('auth:student')->group(function() {
-    Route::get('student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
-    Route::post('student/enroll/{module_id}', [StudentController::class, 'enroll'])->name('student.enroll');
-});
-
-Route::middleware(['auth:oldstudent', 'oldstudent'])->group(function () {
-    Route::get('oldstudent/dashboard', [OldStudentController::class, 'dashboard'])->name('oldstudent.dashboard');
-});
 
 //admin dashboard
-Route::get('/admin/dashboard', [AdminController::class, 'index'])
-    ->middleware('role:web'); // web = admin
+Route::prefix('admin')->middleware([AdminMiddleware::class])->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+});
 
 
 // Homepage (shows blogs)
@@ -124,100 +117,110 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->middleware([AdminMiddleware::class])->group(function () {
-
-    // Admin Dashboard
-    Route::get('/dashboard', [AdminController::class,'index'])->name('admin.dashboard');
-
-    // Modules
-    Route::get('/modules/create', [ModuleController::class,'create'])->name('modules.create');
-    Route::post('/modules/store', [ModuleController::class,'store'])->name('modules.store');
-    Route::put('/modules/toggle/{id}', [ModuleController::class,'toggle'])->name('modules.toggle');
-
-    // Admin actions
-    Route::post('/assign-teacher', [AdminController::class,'assignTeacher'])->name('admin.assignTeacher');
-    Route::post('/change-role', [AdminController::class,'changeRole'])->name('admin.changeRole');
-    Route::post('/add-teacher', [AdminController::class,'addTeacher'])->name('admin.addTeacher');
-    Route::delete('/remove-teacher/{user}', [AdminController::class,'removeTeacher'])->name('admin.removeTeacher');
-});
-
-/*
-|--------------------------------------------------------------------------
-| Student Routes
-|--------------------------------------------------------------------------
-*/
 
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/modules/create', [ModuleController::class, 'create'])
-        ->name('admin.modules.create');
-
-    Route::post('/admin/modules', [ModuleController::class, 'store'])
-        ->name('admin.modules.store');
-    Route::prefix('admin')->middleware(['auth'])->group(function () {
-    Route::get('modules', [ModuleController::class, 'index'])->name('admin.index');
-    Route::get('create_module', [ModuleController::class, 'create'])->name('admin.create_module');
-    Route::post('modules', [ModuleController::class, 'store'])->name('admin.store');
-    Route::get('modules/{module}/edit', [ModuleController::class, 'edit'])->name('admin.edit');
-    Route::put('modules/{module}', [ModuleController::class, 'update'])->name('admin.update');
-
-    Route::delete('modules/{module}', [ModuleController::class, 'destroy'])->name('admin.destroy');
-});  
 
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
 
-    /* =========================
-       DASHBOARD
-    ========================== */
-    Route::get('/dashboard', [AdminController::class, 'index'])
-        ->name('admin.dashboard');
 
-    /* =========================
-       ASSIGN TEACHER
-    ========================== */
-    Route::get('/assign-teacher', [AdminController::class, 'assignTeacherPage'])
-        ->name('admin.assignTeacher');
 
-    Route::post('/add-teacher', [AdminController::class, 'storeTeacher'])
-        ->name('admin.addTeacher');
+// my worked urls 
 
-    Route::post('/assign-teacher', [AdminController::class, 'assignTeacher'])
-        ->name('admin.assignTeacherSubmit');
+Route::middleware([AdminMiddleware::class])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    /* =========================
-       CHANGE ROLE
-    ========================== */
-    Route::get('/change-role', [AdminController::class, 'changeRolePage'])
-        ->name('admin.changeRolePage');
+       
+    // List all modules
+    Route::get('/modules', [ModuleController::class, 'index'])->name('modules.index');
 
-    Route::post('/change-role', [AdminController::class, 'changeRole'])
-        ->name('admin.changeRole');
+    // Show form to create a module
+    Route::get('/modules/create', [ModuleController::class, 'create'])->name('modules.create');
 
-    /* =========================
-       REMOVE TEACHER
-    ========================== */
-Route::delete('/admin/teacher/remove/{teacherId}', [AdminController::class, 'removeTeacher'])
-    ->name('admin.removeTeacher');
+    // Store new module
+    Route::post('/modules', [ModuleController::class, 'store'])->name('modules.store');
 
-    Route::delete(
-        '/modules/{module}/teachers/{teacher}',
-        [AdminController::class, 'removeTeacherFromModule']
-    )->name('admin.removeTeacherFromModule');
+    // Show form to edit a module
+    Route::get('/modules/{module}/edit', [ModuleController::class, 'edit'])->name('modules.edit');
 
+    // Update a module
+    Route::put('/modules/{module}', [ModuleController::class, 'update'])->name('modules.update');
+
+    // Delete a module
+    Route::delete('/modules/{module}', [ModuleController::class, 'destroy'])->name('modules.destroy');
+
+    // Toggle availability
+    Route::patch('/modules/{module}/toggle', [ModuleController::class, 'toggleModuleAvailability'])
+        ->name('modules.toggle');
+
+    //change role from current role
+    Route::get('/change-role', [AdminController::class, 'changeRolePage'])->name('changeRolePage');
+    Route::post('/change-role', [AdminController::class, 'changeRole'])->name('changeRole');
+
+    //adding new teacher assign
+    Route::get('/assign-teacher', [AdminController::class, 'assignTeacherPage'])->name('assignTeacher');
+    Route::post('/assign-teacher', [AdminController::class, 'assignTeacher'])->name('assignTeacherSubmit');
+    Route::post('/add-teacher', [AdminController::class, 'storeTeacher'])->name('addTeacher');
+
+    //remove teacher permanently
+    Route::delete('/teacher/remove/{teacher}', [AdminController::class, 'removeTeacher'])->name('removeTeacher');
+
+    //remove teacher form module
+    Route::delete('/modules/{module}/teachers/{teacher}', [AdminController::class, 'removeTeacherFromModule'])
+        ->name('removeTeacherFromModule');
+        
+        });
+
+
+
+
+
+ 
     
-    /* =========================
-       TOGGLE MODULE
-    ========================== */
-    Route::patch(
-        '/modules/{module}/toggle-availability',
-        [AdminController::class, 'toggleModuleAvailability']
-    )->name('admin.toggleModuleAvailability');
+    
 
-});
 
-});
+ // Teacher routes
+Route::prefix('teacher')
+    ->middleware(['auth:teacher', 'teacher'])
+    ->name('teacher.') // all route names will start with teacher.
+    ->group(function () {
+
+        // Teacher dashboard
+        Route::get('/dashboard', [TeacherController::class, 'modules'])
+            ->name('dashboard');
+
+        // List students in a module
+        Route::get('/modules/{module}/students', [TeacherController::class, 'students'])
+            ->name('modules.students');
+
+        // Mark PASS/FAIL for a student in a module
+        Route::post(
+            '/modules/{module}/students/{student}/status',
+            [TeacherController::class, 'updateStudentStatus']
+        )->name('student.status'); // final route name: teacher.student.status
+    });
+
+
+  
+//student 
+Route::prefix('student')
+    ->middleware(['auth:student'])
+    ->name('student.')
+    ->group(function () {
+
+        // Student dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
+
+        // Enroll in a module
+        Route::post('/enroll/{module}', [StudentModuleController::class, 'enroll'])
+            ->name('enroll'); // points to Student\ModuleController
+    });
+
+   
 /*
 |--------------------------------------------------------------------------
 | Auth Routes (Breeze)

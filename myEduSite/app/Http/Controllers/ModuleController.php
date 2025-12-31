@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
-use App\Models\Role;
+
 use App\Models\Module;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class ModuleController extends Controller
 {
@@ -13,117 +11,71 @@ class ModuleController extends Controller
     public function index()
     {
         $modules = Module::all(); // Get all modules
-        return view('admin.index', compact('modules')); // Correct view path
+        return view('admin.index', compact('modules')); // admin.index blade
     }
 
     // Show form to create a module
     public function create()
     {
-        return view('admin.create_module'); // Correct view path
+        return view('admin.create_module'); // admin.create_module blade
     }
 
     // Store a new module
- public function store(Request $request)
-{
-    $request->validate([
-        'module' => 'required|string|max:255|unique:modules,module',
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'module' => 'required|string|max:255|unique:modules,module',
+        ]);
 
-    // Debug: make sure the value is coming
-    // dd($request->all());
+        $module = new Module();
+        $module->module = $request->module;
+        $module->save();
 
-    $module = new Module();
-    $module->module = $request->module; // Assign directly
-    $module->save(); // Save to database
-
-    return redirect()->route('admin.create_module')
-                     ->with('success', 'Module added successfully!');
-}
-
+        // Redirect to create page with success message
+        return redirect()->route('admin.modules.create')
+                         ->with('success', 'Module added successfully!');
+    }
 
     // Show form to edit a module
     public function edit(Module $module)
     {
-        return view('admin.edit', compact('module')); // Correct view path
+        return view('admin.edit', compact('module')); // admin.edit blade
     }
 
     // Update a module
-public function update(Request $request, Module $module)
-{
-    // Validate
-    $request->validate([
-        'module' => 'required|string|max:255|unique:modules,module,' . $module->id,
-    ]);
+    public function update(Request $request, Module $module)
+    {
+        $request->validate([
+            'module' => 'required|string|max:255|unique:modules,module,' . $module->id,
+        ]);
 
-    // Direct DB update (like your Blog example)
-    Module::where('id', $module->id)->update([
-        'module' => $request->module,
-    ]);
+        $module->update([
+            'module' => $request->module,
+        ]);
 
-    return redirect()->route('admin.index')
-                     ->with('success', 'Module updated successfully!');
-}
+        // Redirect to module list with success message
+        return redirect()->route('admin.modules.index')
+                         ->with('success', 'Module updated successfully!');
+    }
+
     // Delete a module
     public function destroy(Module $module)
     {
         $module->delete();
-        return redirect()->route('admin.index')
+
+        return redirect()->route('admin.modules.index')
                          ->with('success', 'Module deleted successfully!');
     }
-
-
-
-    // Show assign teacher page
-    public function assignTeacherPage()
+    
+    /* =========================
+       TOGGLE MODULE AVAILABILITY
+    ========================== */
+   public function toggleModuleAvailability(Module $module)
     {
-        $modules = Module::with('teachers')->get();
+        $module->is_available = !$module->is_available;
+        $module->save();
 
-        // Get all users with role = Teacher
-        $teacherRole = Role::where('name', 'Teacher')->first();
-        $teachers = User::where('role_id', $teacherRole->id)->get();
-
-        return view('admin.assignTeacher', compact('modules', 'teachers'));
-    }
-
-    // Add teacher (as a User with role = Teacher)
-    public function addTeacher(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $teacherRole = Role::where('name', 'Teacher')->first();
-
-        User::create([
-            'name'     => $request->name,
-            'email'    => $request->name.'_'.time().'@example.com', // dummy unique email
-            'password' => Hash::make('password'),
-            'role_id'  => $teacherRole->id,
-        ]);
-
-        return redirect()->route('admin.assignTeacher')
-            ->with('success', 'Teacher added successfully');
-    }
-
-    // Assign teacher to module
-    public function assignTeacher(Request $request)
-    {
-        $request->validate([
-            'module_id' => 'required|exists:modules,id',
-            'teacher_id' => 'required|exists:users,id',
-        ]);
-
-        $module = Module::findOrFail($request->module_id);
-        $module->teachers()->syncWithoutDetaching($request->teacher_id);
-
-        return back()->with('success','Teacher assigned successfully.');
-    }
-
-    // Remove teacher from module
-  public function removeTeacher(Module $module, User $user)
-    {
-        $module->teachers()->detach($user->id);
-
-        return back()->with('success','Teacher removed successfully.');
+        $status = $module->is_available ? 'available' : 'unavailable';
+        return back()->with('success', "Module '{$module->module}' is now {$status}.");
     }
 }

@@ -5,11 +5,11 @@
             <div class="footer-column">
                 <h5>The Rose School</h5> 
                 <ul>
-                    <li><a href="{{ url('/courses/bba') }}">School of Art</a></li>
-                    <li><a href="{{ url('/courses/weekend-mba') }}">School of Business</a></li>
-                    <li><a href="{{ url('/courses/mba') }}">School of Finance</a></li>
-                    <li><a href="{{ url('/courses/hm') }}">School of IT</a></li>
-                    <li><a href="{{ url('/courses/acca') }}">School of Marketing</a></li>
+                    <li><a href="{{ url('/courses') }}">School of Art</a></li>
+                    <li><a href="{{ url('/courses') }}">School of Business</a></li>
+                    <li><a href="{{ url('/courses') }}">School of Finance</a></li>
+                    <li><a href="{{ url('/courses') }}">School of IT</a></li>
+                    <li><a href="{{ url('/courses') }}">School of Marketing</a></li>
                 </ul>
             </div>
 
@@ -20,7 +20,7 @@
                     <li><a href="{{ url('/blogs') }}">Blogs</a></li>
                     <li><a href="{{ url('/contact') }}">Contact</a></li>
                     <li><a href="{{ url('/courses') }}">Courses</a></li>
-                    <li><a href="{{ url('/gallery') }}">Gallery</a></li>
+                    <li><a href="{{ url('/') }}">Gallery</a></li>
                 </ul>
             </div>
 

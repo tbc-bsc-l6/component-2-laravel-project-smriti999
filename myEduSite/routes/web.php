@@ -61,40 +61,29 @@ Route::view('/courses', 'courses')->name('courses');
 Route::view('/about', 'about')->name('about');
 Route::view('/contact', 'contact')->name('contact');
 
-// Blogs public
-Route::get('/blogs', function () {
-    $blogs = Blog::latest()->get();
-    return view('blogs', compact('blogs'));
-})->name('blogs.index');
 
-Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show');
+
+
+
 
 /*
 |--------------------------------------------------------------------------
-| Authenticated Blog Routes
+| Public routes
 |--------------------------------------------------------------------------
 */
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
 
-Route::middleware('auth')->group(function () {
+Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
 
-    Route::get('/blogs/create', function () {
-        return view('createblog');
-    })->name('blogs.create');
+Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
 
-    Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
+Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show');
 
-    Route::get('/blog/{blog}/edit', function (Blog $blog) {
-        if (Gate::denies('update-blog', $blog)) {
-            abort(403);
-        }
-        return view('editblog', compact('blog'));
-    })->name('blogs.edit');
+Route::get('/blog/{blog}/edit', [BlogController::class, 'edit'])->name('blogs.edit');
 
-    Route::put('/blog/{blog}', [BlogController::class, 'update'])->name('blogs.update');
+Route::put('/blog/{blog}', [BlogController::class, 'update'])->name('blogs.update');
 
-    Route::delete('/blog/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy');
-});
-
+Route::delete('/blog/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy');
 /*
 |--------------------------------------------------------------------------
 | Dashboard & Profile

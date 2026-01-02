@@ -3,19 +3,29 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Blog extends Model
 {
-    
-     public function getRouteKeyName(): string
+    use HasFactory;
+
+    // Allow mass assignment for these fields
+    protected $fillable = [
+        'title',
+        'slug',
+        'author_name',
+        'content',
+        'user_id',
+        'published_date',
+    ];
+
+    // Use slug for route model binding
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
-    //Mass assignment below
-    protected $fillable = ['title','slug','author_name','content','user_id'];
 
-    //protected $guarted = []; //set this to empty array to allow all fields for mass
-
+    // Relationship to user
     public function user()
     {
         return $this->belongsTo(User::class);

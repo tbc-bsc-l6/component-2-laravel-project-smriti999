@@ -1,101 +1,114 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Blog;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Ensure the logged-in user is an admin
+     */
+    private function ensureAdmin()
+    {
+        if (!Auth::check() || Auth::user()->user_role_id != 1) {
+            abort(403, 'Only admin can perform this action.');
+        }
+    }
+
+    /**
+     * Display a listing of the blogs.
      */
     public function index()
     {
         $blogs = Blog::latest()->get();
-        return view('home', compact('blogs'));
+        return view('home', compact('blogs')); // your blog list page
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new blog.
      */
     public function create()
     {
-        //
+        $this->ensureAdmin();
         return view('createblog');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created blog in storage.
      */
     public function store(Request $request)
     {
+        $this->ensureAdmin();
+
         $request->validate([
-            'title'=>['required'],
-            'author'=>['required'],
-            'content'=>['required','max:255'],
+            'title'   => ['required', 'string', 'max:255'],
+            'author'  => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'], // content can be long text
         ]);
-        
-        $data= $request->all();
-        
-  
-        $blog = Blog::create([
-            'title' => $data['title'],
-            'slug' => Str::slug($data['title']),
-            'author_name'=>$data['author'],
-            'content'=> $data['content'],
-            'user_id'=> Auth::id()// OR $request->user_id
+
+        Blog::create([
+            'title'       => $request->input('title'),
+            'slug'        => Str::slug($request->input('title')),
+            'author_name' => $request->input('author'),
+            'content'     => $request->input('content'),
+            'user_id'     => Auth::id(),
         ]);
-        return redirect('/blogs');
+
+        return redirect()->route('blogs.index');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified blog.
      */
-   public function show(Blog $blog)
-   {
-            return view('showblog', compact('blog'));
-   }
-
+    public function show(Blog $blog)
+    {
+        return view('showblog', compact('blog'));
+    }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified blog.
      */
     public function edit(Blog $blog)
     {
-        return view('editblog',['blog'=>$blog]);
+        $this->ensureAdmin();
+        return view('editblog', compact('blog'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified blog in storage.
      */
     public function update(Request $request, Blog $blog)
     {
-        $data= $request->all();
-        //validate and store the blog data
-        // $blog->blog_title = $data['title'];
-        // $blog->author_name = $data['author'];
-        // $blog->content = $data['content'];
-        // $blog->update();
-        // return redirect('/blogs');
-         Blog::where('slug',$blog->slug)->update([
-            'title' => $data['title'],
-            'slug' => Str::slug($data['title']),
-            'author_name'=>$data['author'],
-            'content'=> $data['content']
+        $this->ensureAdmin();
+
+        $request->validate([
+            'title'   => ['required', 'string', 'max:255'],
+            'author'  => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'], // matches textarea name
         ]);
-        return redirect('/blogs');
+
+        $blog->update([
+            'title'       => $request->input('title'),
+            'slug'        => Str::slug($request->input('title')),
+            'author_name' => $request->input('author'),
+            'content'     => $request->input('content'),
+        ]);
+
+        return redirect()->route('blogs.index');
     }
-        
-    
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified blog from storage.
      */
     public function destroy(Blog $blog)
     {
+        $this->ensureAdmin();
         $blog->delete();
-        return redirect('/blogs');
+
+        return redirect()->route('blogs.index');
     }
 }

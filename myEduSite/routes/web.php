@@ -66,24 +66,11 @@ Route::view('/contact', 'contact')->name('contact');
 
 
 
-/*
-|--------------------------------------------------------------------------
-| Public routes
-|--------------------------------------------------------------------------
-*/
-Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
 
-Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('blogs', BlogController::class);
+});
 
-Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
-
-Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show');
-
-Route::get('/blog/{blog}/edit', [BlogController::class, 'edit'])->name('blogs.edit');
-
-Route::put('/blog/{blog}', [BlogController::class, 'update'])->name('blogs.update');
-
-Route::delete('/blog/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy');
 /*
 |--------------------------------------------------------------------------
 | Dashboard & Profile

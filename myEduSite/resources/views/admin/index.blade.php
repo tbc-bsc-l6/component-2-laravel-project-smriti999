@@ -1,63 +1,79 @@
 @extends('admin.layout')
 
 @section('content')
-<h1 class="text-2xl font-bold mb-4">Modules</h1>
+    <h1 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 20px;">Modules</h1>
 
-<a href="{{ route('admin.modules.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">
-    Add Module
-</a>
+    <!-- Add Module Button -->
+    <a href="{{ route('admin.modules.create') }}" 
+       style="background-color: #2c2c2c; color: white; padding: 8px 16px; border-radius: 5px; margin-bottom: 20px; display: inline-block;">
+        Add Module
+    </a>
 
-@if(session('success'))
-    <p class="text-green-600 mb-4">{{ session('success') }}</p>
-@endif
+    <!-- Success Message -->
+    @if(session('success'))
+        <div style="margin-bottom: 20px; padding: 10px; background-color: #d1fae5; color: #065f46; border-radius: 6px;">
+            {{ session('success') }}
+        </div>
+    @endif
 
-<table class="min-w-full border border-gray-300">
-    <thead>
-        <tr class="bg-gray-100">
-            <th class="border px-4 py-2 text-left">ID</th>
-            <th class="border px-4 py-2 text-left">Module Name</th>
-            <th class="border px-4 py-2 text-left">Status</th>
-            <th class="border px-4 py-2 text-left">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($modules as $module)
-        <tr>
-            <td class="border px-4 py-2">{{ $module->id }}</td>
-            <td class="border px-4 py-2">{{ $module->module }}</td>
-            <td class="border px-4 py-2">
-                @if($module->is_available)
-                    <span class="text-green-600 font-semibold">Available</span>
-                @else
-                    <span class="text-red-600 font-semibold">Unavailable</span>
-                @endif
-            </td>
-            <td class="border px-4 py-2 space-x-2">
-                <!-- Edit -->
-                <a href="{{ route('admin.modules.edit', $module->id) }}" class="text-blue-600 underline">Edit</a>
+    <!-- Responsive Table Wrapper -->
+    <div style="overflow-x: auto; background-color: rgb(245, 195, 203); padding: 15px; border-radius: 10px;">
+        <table style="width: 100%; border-collapse: collapse; min-width: 700px;">
+            <thead style="background-color: rgba(0,0,0,0.1);">
+                <tr>
+                    <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">ID</th>
+                    <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Module Name</th>
+                    <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Status</th>
+                    <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($modules as $module)
+                    <tr style="background-color: rgba(255,255,255,0.6);">
+                        <td style="border: 1px solid #ccc; padding: 10px;">{{ $module->id }}</td>
+                        <td style="border: 1px solid #ccc; padding: 10px;">{{ $module->module }}</td>
+                        <td style="border: 1px solid #ccc; padding: 10px;">
+                            @if($module->is_available)
+                                <span style="color: #065f46; font-weight: 600;">Available</span>
+                            @else
+                                <span style="color: #7f1d1d; font-weight: 600;">Unavailable</span>
+                            @endif
+                        </td>
+                        <td style="border: 1px solid #ccc; padding: 10px; display: flex; flex-wrap: wrap; gap: 10px;">
+                            <!-- Edit -->
+                            <a href="{{ route('admin.modules.edit', $module->id) }}" 
+                               style="color: #2563eb; text-decoration: underline; padding: 4px 8px; border-radius: 4px; background-color: #e0e7ff;">
+                                Edit
+                            </a>
 
-                <!-- Delete -->
-                <form action="{{ route('admin.modules.destroy', $module->id) }}" method="POST" class="inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="text-red-600" onclick="return confirm('Are you sure?')">Delete</button>
-                </form>
+                            <!-- Delete -->
+                            <form action="{{ route('admin.modules.destroy', $module->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                        style="background-color: #dc2626; color: white; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer;" 
+                                        onclick="return confirm('Are you sure?')">
+                                    Delete
+                                </button>
+                            </form>
 
-                <!-- Toggle availability -->
-                <form action="{{ route('admin.modules.toggle', $module->id) }}" method="POST" class="inline">
-                    @csrf
-                    @method('PATCH')
-                    <button type="submit" class="text-gray-700 underline">
-                        @if($module->is_available)
-                            Make Unavailable
-                        @else
-                            Make Available
-                        @endif
-                    </button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+                            <!-- Toggle availability -->
+                            <form action="{{ route('admin.modules.toggle', $module->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" 
+                                        style="background-color: #2c2c2c; color: white; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer;">
+                                    @if($module->is_available)
+                                        Make Unavailable
+                                    @else
+                                        Make Available
+                                    @endif
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @endsection

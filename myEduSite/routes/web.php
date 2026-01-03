@@ -34,8 +34,6 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 
 
-
-
 Route::middleware(['auth:oldstudent'])
     ->prefix('old-student')
     ->name('oldstudent.')
@@ -103,6 +101,12 @@ Route::middleware('auth')->group(function () {
 
 // my worked urls 
 
+
+// Remove student from module (Admin)
+Route::delete('admin/modules/{module}/students/{student}/remove', [App\Http\Controllers\AdminController::class, 'removeStudentFromModule'])
+    ->name('admin.modules.students.remove');
+
+
 Route::middleware([AdminMiddleware::class])
     ->prefix('admin')
     ->name('admin.')
@@ -146,7 +150,9 @@ Route::middleware([AdminMiddleware::class])
     //remove teacher form module
     Route::delete('/modules/{module}/teachers/{teacher}', [AdminController::class, 'removeTeacherFromModule'])
         ->name('removeTeacherFromModule');
-        
+     
+      
+
         });
 
 

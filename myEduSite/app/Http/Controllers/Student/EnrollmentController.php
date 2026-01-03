@@ -10,41 +10,44 @@ class EnrollmentController extends Controller
 {
     public function enroll($moduleId)
     {
-        $student = Auth::user()->student; // student linked to user
+        $student = Auth::user()->student; // logged-in student's model
         $module = Module::findOrFail($moduleId);
 
-        // ❌ Module archived
+        // ❌ Check if module is available
         if (!$module->is_available) {
             return back()->with('error', 'Module is not available.');
         }
 
-        // ❌ Student already enrolled
+        // ❌ Check if student already enrolled in this module
         if ($student->modules()->where('module_id', $moduleId)->exists()) {
             return back()->with('error', 'You are already enrolled in this module.');
         }
 
-        // ❌ Max 4 active modules per student
-        $activeModules = $student->modules()
-            ->whereNull('module_student.completed_at')
+        // ❌ Check max 4 active modules per student
+        // Get all active modules where pivot.completed_at is null
+        $activeModulesCount = $student->modules()
+            ->wherePivot('completed_at', null)
             ->count();
 
-        if ($activeModules >= 4) {
-            return back()->with('error', 'You can enroll in maximum 4 active modules.');
+        if ($activeModulesCount >= 4) {
+            return back()->with('error', 'You can enroll in a maximum of 4 active modules.');
         }
 
-        // ❌ Max 10 active students per module
-        $activeStudents = $module->activeStudents()->count();
+        // ❌ Check max 10 active students per module
+        $activeStudentsCount = $module->students()
+            ->wherePivot('completed_at', null)
+            ->count();
 
-        if ($activeStudents >= 10) {
+        if ($activeStudentsCount >= 10) {
             return back()->with('error', 'Module is full. Maximum 10 students allowed.');
         }
 
-        // ✅ Enroll student
+        // ✅ Enroll the student
         $student->modules()->attach($moduleId, [
             'enrolled_at' => now(),
             'status' => 'pending',
         ]);
 
-        return back()->with('success', 'Successfully enrolled in module.');
+        return back()->with('success', 'Successfully enrolled in the module.');
     }
 }

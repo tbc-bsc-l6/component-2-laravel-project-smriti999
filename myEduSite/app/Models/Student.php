@@ -24,13 +24,12 @@ class Student extends Authenticatable
         'remember_token',
     ];
 
-   public function modules()
-{
-    return $this->belongsToMany(Module::class)
-                ->withPivot('status', 'enrolled_at', 'completed_at') // change here too
-                ->withTimestamps();
-}
-
+  public function modules()
+    {
+        return $this->belongsToMany(Module::class, 'module_student', 'student_id', 'module_id')
+                    ->withPivot('status', 'enrolled_at', 'completed_at')
+                    ->withTimestamps();
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

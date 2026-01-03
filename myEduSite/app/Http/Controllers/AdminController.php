@@ -190,6 +190,25 @@ public function removeTeacherFromModule(Module $module, Teacher $teacher)
     return back()->with('success', 'Teacher removed from module successfully!');
 }
 
+
+
+
+//remove student form module
+
+public function removeStudentFromModule($moduleId, $studentId)
+{
+    $module = \App\Models\Module::findOrFail($moduleId);
+    $student = \App\Models\Student::findOrFail($studentId);
+
+    // Detach the student from the module
+    $module->students()->detach($student->id);
+
+    return back()->with('success', 'Student removed from module successfully!');
+}
+
+
+
+
 // Remove teacher completely
  public function removeTeacher($teacherId)
 {
@@ -208,15 +227,4 @@ public function removeTeacherFromModule(Module $module, Teacher $teacher)
     return back()->with('success', 'Teacher removed successfully.');
 }
 
-    /* =========================
-       TOGGLE MODULE AVAILABILITY
-    ========================== */
-    public function toggleModuleAvailability(Module $module)
-    {
-        $module->is_available = !$module->is_available;
-        $module->save();
-
-        $status = $module->is_available ? 'available' : 'unavailable';
-        return back()->with('success', "Module '{$module->module}' is now {$status}.");
-    }
 }

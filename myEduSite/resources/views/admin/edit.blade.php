@@ -1,36 +1,44 @@
 @extends('admin.layout')
 
 @section('content')
-<h1 class="text-2xl font-bold mb-4">Edit Module</h1>
+    <h1 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 20px;">Edit Module</h1>
 
-@if ($errors->any())
-    <ul class="mb-4 text-red-600">
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-@endif
+    <!-- Display Errors -->
+    @if ($errors->any())
+        <ul style="margin-bottom: 20px; color: #dc2626;">
+            @foreach ($errors->all() as $error)
+                <li>• {{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
 
-<form action="{{ route('admin.modules.update', $module->id) }}" method="POST" class="mb-4">
-    @csrf
-    @method('PUT')
-    
-    <label for="module" class="block mb-2 font-semibold">Module Name:</label>
-    <input 
-        type="text" 
-        name="module" 
-        id="module" 
-        value="{{ old('module', $module->module) }}" 
-        required
-        class="border border-gray-300 rounded px-3 py-2 w-full mb-4"
-    >
-    
-    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-        Update Module
-    </button>
-</form>
+    <!-- Edit Module Form -->
+    <form action="{{ route('admin.modules.update', $module->id) }}" method="POST" 
+          style="max-width: 400px; background-color: rgb(245, 195, 203); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+        @csrf
+        @method('PUT')
+        
+        <label for="module" style="display: block; font-weight: 600; margin-bottom: 6px; color: #2c2c2c;">
+            Module Name:
+        </label>
+        <input 
+            type="text" 
+            name="module" 
+            id="module" 
+            value="{{ old('module', $module->module) }}" 
+            required
+            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;"
+        >
+        
+        <button type="submit" 
+                style="background-color: #2c2c2c; color: white; padding: 8px 16px; border-radius: 5px; border: none; cursor: pointer;">
+            Update Module
+        </button>
+    </form>
 
-<a href="{{ route('admin.modules.index') }}" class="text-blue-500 hover:underline">
-    Back to list
-</a>
+    <!-- Back to list -->
+    <a href="{{ route('admin.modules.index') }}" 
+       style="color: #2c2c2c; text-decoration: underline; display: inline-block;">
+        ← Back to Module List
+    </a>
 @endsection

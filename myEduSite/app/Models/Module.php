@@ -19,11 +19,12 @@ class Module extends Model
 
    
 public function students()
-{
-    return $this->belongsToMany(Student::class)
-                ->withPivot('status', 'enrolled_at', 'completed_at') // use 'status' instead of 'pass_status'
-                ->withTimestamps();
-}
+    {
+        return $this->belongsToMany(Student::class, 'module_student', 'module_id', 'student_id')
+                    ->withPivot('status', 'enrolled_at', 'completed_at') 
+                    ->withTimestamps();
+    }
+
 
     public function oldStudents()
     {

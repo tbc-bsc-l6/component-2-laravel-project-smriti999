@@ -17,14 +17,14 @@
             @if($module->students->count() > 0)
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-100">
+                        <thead class="bg-pink-100">
                         <tr>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Student</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Email</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Enrolled At</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Status</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Completed At</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Action</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Student</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Email</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Enrolled At</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Status</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Completed At</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Action</th>
                         </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -42,7 +42,7 @@
                                             <option value="pass" @if($student->pivot->status==='pass') selected @endif>Pass</option>
                                             <option value="fail" @if($student->pivot->status==='fail') selected @endif>Fail</option>
                                         </select>
-                                        <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition duration-150">
+                                        <button type="submit" class="bg-pink-500 text-white px-3 py-1 rounded hover:bg-pink-600 transition duration-150">
                                             Set
                                         </button>
                                     </form>

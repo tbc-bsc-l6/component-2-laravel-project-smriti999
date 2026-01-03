@@ -26,11 +26,16 @@ public function students()
     }
 
 
-    public function oldStudents()
+   public function oldStudents()
     {
-        return $this->belongsToMany(OldStudent::class, 'module_student')
-                    ->withPivot('status','enrolled_at','completed_at')
-                    ->withTimestamps();
+        return $this->belongsToMany(
+            OldStudent::class,    // your OldStudent model
+            'module_student',     // pivot table
+            'module_id',          // FK for Module
+            'student_id'          // FK for OldStudent
+        )
+        ->withPivot('status','enrolled_at','completed_at')
+        ->withTimestamps();
     }
 
      public function activeStudents()

@@ -12,11 +12,16 @@ class OldStudent extends Authenticatable
     protected $hidden = ['password','remember_token'];
 
     public function modules()
-{
-    return $this->belongsToMany(Module::class)
+    {
+        return $this->belongsToMany(
+            Module::class,      // related model
+            'module_student',   // pivot table
+            'student_id',       // FK for OldStudent
+            'module_id'         // FK for Module
+        )
         ->withPivot(['status', 'enrolled_at', 'completed_at'])
         ->withTimestamps();
-}
+    }
 
     public function user()
 {

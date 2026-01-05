@@ -18,25 +18,37 @@ class StudentController extends Controller
     {
         $student = Auth::guard('student')->user();
 
-        // Modules currently enrolled (status pending)
-        $currentModules = $student->modules()->wherePivot('pass_status', 'pending')->get();
+        // ✅ CURRENT MODULES (Pending + NOT completed)
+        $currentModules = $student->modules()
+            ->wherePivot('status', 'pending')
+            ->wherePivotNull('completed_at')   // 🔴 STEP 4 ADDED HERE
+            ->get();
 
-        // Completed modules (passed/failed)
-        $completedModules = $student->modules()->wherePivotIn('pass_status', ['passed','failed'])->get();
+        // ✅ COMPLETED MODULES (Passed / Failed)
+        $completedModules = $student->modules()
+            ->wherePivotIn('status', ['passed', 'failed'])
+            ->get();
 
-        // Available modules (not yet enrolled, and is_available)
+        // ✅ AVAILABLE MODULES (not yet enrolled)
         $availableModules = Module::where('is_available', 1)
-                                  ->whereNotIn('id', $student->modules->pluck('id'))
-                                  ->get();
+            ->whereNotIn('id', $student->modules->pluck('id'))
+            ->get();
 
-        return view('student.dashboard', compact('student', 'currentModules', 'completedModules', 'availableModules'));
+        return view(
+            'student.dashboard',
+            compact('student', 'currentModules', 'completedModules', 'availableModules')
+        );
     }
 
     public function enroll(Request $request, $module_id)
     {
         $student = Auth::guard('student')->user();
 
-        $currentModulesCount = $student->modules()->wherePivot('pass_status', 'pending')->count();
+        // ✅ Count only ACTIVE pending modules
+        $currentModulesCount = $student->modules()
+            ->wherePivot('status', 'pending')
+            ->wherePivotNull('completed_at')
+            ->count();
 
         if ($currentModulesCount >= 4) {
             return back()->with('error', 'You cannot enroll in more than 4 modules at a time.');
@@ -46,7 +58,11 @@ class StudentController extends Controller
             return back()->with('error', 'You are already enrolled in this module.');
         }
 
-        $student->modules()->attach($module_id, ['enrolled_at' => now(), 'pass_status' => 'pending']);
+        // ✅ Attach module correctly
+        $student->modules()->attach($module_id, [
+            'enrolled_at' => now(),
+            'status' => 'pending',
+        ]);
 
         return back()->with('success', 'Module enrolled successfully!');
     }

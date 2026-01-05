@@ -12,7 +12,7 @@ class ResultController extends Controller
     public function complete(Module $module, Student $student, $status)
     {
         $student->modules()->updateExistingPivot($module->id, [
-            'pass_status' => $status, // passed / failed
+            'status' => $status, // passed / failed
             'completed_at' => Carbon::now(),
         ]);
 

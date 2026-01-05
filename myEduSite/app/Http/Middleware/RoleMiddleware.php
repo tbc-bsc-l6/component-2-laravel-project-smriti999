@@ -4,20 +4,33 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Teacher;
+use App\Models\Student;
+use App\Models\OldStudent;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     * @param  string  $role
-     */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (!auth()->check() || !auth()->user()->hasRole($role)) {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+
+        $user = Auth::user();
+
+        $userRole = null;
+        if ($user instanceof \App\Models\User) {
+            $userRole = 'admin';
+        } elseif ($user instanceof Teacher) {
+            $userRole = 'teacher';
+        } elseif ($user instanceof Student) {
+            $userRole = 'student';
+        } elseif ($user instanceof OldStudent) {
+            $userRole = 'oldstudent';
+        }
+
+        if (!in_array($userRole, $roles)) {
             abort(403, 'Unauthorized');
         }
 

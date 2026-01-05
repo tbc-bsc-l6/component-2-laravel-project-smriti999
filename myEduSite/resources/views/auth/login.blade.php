@@ -31,9 +31,6 @@
                 <option value="student">Student</option>
                 <option value="teacher">Teacher</option>
                 <option value="oldstudent">Old Student</option>
-                
-
-
             </select>
         </div>
 

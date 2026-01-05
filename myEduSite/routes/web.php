@@ -22,8 +22,6 @@ use App\Http\Controllers\OldStudent\DashboardController as OldStudentDashboardCo
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Public Routes

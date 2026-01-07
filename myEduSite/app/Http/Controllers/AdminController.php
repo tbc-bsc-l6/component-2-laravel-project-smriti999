@@ -93,16 +93,49 @@ public function changeRole(Request $request)
             break;
 
         case 'oldstudent':
-            \App\Models\OldStudent::updateOrCreate(
-    ['user_id' => $user->id], // find existing record by user_id
-                    [
-                        'user_id' => $user->id,   // MUST be included for insert
-                        'name'    => $user->name,
-                        'email'   => $user->email,
-                        'password'=> $user->password,
-                    ]
-                );
-            break;
+
+    // 1️⃣ Create or update OldStudent
+    $oldStudent = \App\Models\OldStudent::updateOrCreate(
+        ['user_id' => $user->id],
+        [
+            'name'     => $user->name,
+            'email'    => $user->email,
+            'password' => $user->password,
+        ]
+    );
+
+    // 2️⃣ Copy passed/failed modules from student → oldstudent
+    if ($user->student) {
+        $modules = $user->student->modules()
+                    ->whereIn('status', ['passed','failed'])
+                    ->get();
+
+        foreach ($modules as $module) {
+            $oldStudent->modules()->syncWithoutDetaching([
+                $module->id => [
+                    'status'       => $module->pivot->status,
+                    'enrolled_at'  => $module->pivot->enrolled_at,
+                    'completed_at' => $module->pivot->completed_at,
+                    'created_at'   => now(),
+                    'updated_at'   => now(),
+                ]
+            ]);
+        }
+
+        // 3️⃣ Delete Student record after copying
+        $user->student->delete();
+    }
+
+break;
+
+
+
+
+
+
+
+
+
     }
 
     return back()->with('success', "User role changed from {$oldRole} to {$newRole} successfully.");

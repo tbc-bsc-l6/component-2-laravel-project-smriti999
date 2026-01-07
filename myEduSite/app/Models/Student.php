@@ -30,6 +30,18 @@ class Student extends Authenticatable
                     ->withPivot('status', 'enrolled_at', 'completed_at')
                     ->withTimestamps();
     }
+
+    public function oldModules()
+    {
+        return $this->belongsToMany(
+            Module::class,
+            'module_old_student',
+            'old_student_id',
+            'module_id'
+        )
+        ->withPivot('status', 'enrolled_at', 'completed_at')
+        ->withTimestamps();
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

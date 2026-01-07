@@ -18,7 +18,6 @@ use App\Http\Controllers\Admin\TeacherController as AdminTeacher;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\OldStudentController;
-use App\Http\Controllers\OldStudent\DashboardController as OldStudentDashboardController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 
@@ -32,12 +31,13 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 
 
+
 Route::middleware(['auth:oldstudent'])
     ->prefix('old-student')
     ->name('oldstudent.')
     ->group(function () {
 
-        Route::get('/dashboard', [OldStudentDashboardController::class, 'index'])
+        Route::get('/dashboard', [OldStudentController::class, 'index'])
             ->name('dashboard');
 
     });

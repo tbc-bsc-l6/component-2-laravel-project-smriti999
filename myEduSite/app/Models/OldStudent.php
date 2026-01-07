@@ -1,30 +1,35 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use App\Models\Module;
 
 class OldStudent extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
-    protected $fillable = ['user_id','name', 'email', 'password'];
+    protected $fillable = ['user_id','name','email','password'];
     protected $hidden = ['password','remember_token'];
 
+    // Pivot relationship with completed modules
     public function modules()
     {
         return $this->belongsToMany(
-            Module::class,      // related model
-            'module_student',   // pivot table
-            'student_id',       // FK for OldStudent
-            'module_id'         // FK for Module
+            Module::class,
+            'module_old_student',
+            'old_student_id',
+            'module_id'
         )
-        ->withPivot(['status', 'enrolled_at', 'completed_at'])
+        ->withPivot(['status','enrolled_at','completed_at'])
         ->withTimestamps();
     }
 
-    public function user()
-{
-    return $this->belongsTo(User::class, 'user_id');
-}
+    // Only passed/failed modules
+    public function completedModules()
+    {
+        return $this->modules()->wherePivotIn('status', ['passed', 'failed']);
+    }
 }

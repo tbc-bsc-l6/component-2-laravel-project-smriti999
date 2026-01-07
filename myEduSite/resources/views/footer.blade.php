@@ -20,7 +20,7 @@
                     <li><a href="{{ url('/blogs') }}">Blogs</a></li>
                     <li><a href="{{ url('/contact') }}">Contact</a></li>
                     <li><a href="{{ url('/courses') }}">Courses</a></li>
-                    <li><a href="{{ url('/') }}">Gallery</a></li>
+                    <li><a href="{{ url('/courses') }}">Gallery</a></li>
                 </ul>
             </div>
 
@@ -42,12 +42,27 @@
         </div>
 
         <div class="social-icons">
-            <a href="https://facebook.com" target="_blank">f</a>
-            <a href="https://twitter.com" target="_blank">t</a>
-            <a href="https://linkedin.com" target="_blank">in</a>
-            <a href="https://youtube.com" target="_blank">yt</a>
-            <a href="https://instagram.com" target="_blank">ig</a>
+            <a href="https://facebook.com" target="_blank">
+                <i class="fa-brands fa-facebook-f"></i>
+            </a>
+
+            <a href="https://twitter.com" target="_blank">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+            <a href="https://linkedin.com" target="_blank">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+
+            <a href="https://youtube.com" target="_blank">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+
+            <a href="https://instagram.com" target="_blank">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
         </div>
+
 
         <div class="footer-bottom">
             <p>© 2025 The Rose College. All Rights Reserved.</p>

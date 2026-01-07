@@ -24,42 +24,56 @@
         <div class="programme-grid">
             <a href="#" class="programme-link">
                 <div class="programme-box border-blue">
-                    <img src="{{ asset('images/programmes/bba-hons-business-and-management.jpg') }}" alt="">
+                    <img src="{{ asset('images/school.jpg') }}" alt="">
                     <div class="programme-title">BBA (Hons) Business and Management</div>
                 </div>
             </a>
 
             <a href="#" class="programme-link">
                 <div class="programme-box border-purple">
-                    <img src="{{ asset('images/programmes/hospitality-management.jpg') }}" alt="">
+                    <img src="{{ asset('images/hotel.jpg') }}" alt="">
                     <div class="programme-title">HM (Hospitality Management)</div>
                 </div>
             </a>
 
             <a href="#" class="programme-link">
                 <div class="programme-box border-darkblue">
-                    <img src="{{ asset('images/programmes/bsc-hons-computing.jpg') }}" alt="">
+                    <img src="{{ asset('images/computer.jpg') }}" alt="">
                     <div class="programme-title">BSc (Hons) Computing</div>
                 </div>
             </a>
 
             <a href="#" class="programme-link">
                 <div class="programme-box border-lightpurple">
-                    <img src="{{ asset('images/programmes/bsc-hons-cyber-security.jpg') }}" alt="">
+                    <img src="{{ asset('images/cyber.jpg') }}" alt="">
                     <div class="programme-title">BSc (Hons) Cyber Security & Digital Forensics</div>
                 </div>
             </a>
 
             <a href="#" class="programme-link">
                 <div class="programme-box border-black">
-                    <img src="{{ asset('images/programmes/bsc-hons-ai.jpg') }}" alt="">
+                    <img src="{{ asset('images/ai.jpg') }}" alt="">
                     <div class="programme-title">BSc (Hons) Computer Science - Artificial Intelligence</div>
                 </div>
             </a>
 
             <a href="#" class="programme-link">
+                <div class="programme-box border-black">
+                    <img src="{{ asset('images/art.jpg') }}" alt="">
+                    <div class="programme-title">BSc (hons) Art</div>
+                </div>
+            </a>
+
+            <a href="#" class="programme-link">
+                <div class="programme-box border-black">
+                    <img src="{{ asset('images/market.jpg') }}" alt="">
+                    <div class="programme-title">BSc (hons) Marketing </div>
+                </div>
+            </a>
+
+            <a href="#" class="programme-link">
                 <div class="programme-box border-blue2">
-                    <img src="{{ asset('images/programmes/bsc-hons-data-science.jpg') }}" alt="">
+                    <img src="{{ asset('images/data.jpg') }}" alt="">
                     <div class="programme-title">BSc (Hons) Data Science</div>
                 </div>
             </a>
@@ -73,37 +87,31 @@
         <h2 class="text-center mb-5">Postgraduate programme</h2>
 
         <div class="programme-grid">
-            <a href="#" class="programme-link">
-                <div class="programme-box border-blue">
-                    <img src="{{ asset('images/programmes/weekend-mba-executive.jpg') }}" alt="">
-                    <div class="programme-title">Weekend MBA (Executive)</div>
-                </div>
-            </a>
 
             <a href="#" class="programme-link">
                 <div class="programme-box border-purple">
-                    <img src="{{ asset('images/programmes/mba-graduate.jpg') }}" alt="">
-                    <div class="programme-title">MBA (Graduate)</div>
+                    <img src="{{ asset('images/artms.jpg') }}" alt="">
+                    <div class="programme-title">MSc Art</div>
                 </div>
             </a>
 
             <a href="#" class="programme-link">
                 <div class="programme-box border-darkblue">
-                    <img src="{{ asset('images/programmes/msc-professional-accountancy.jpg') }}" alt="">
+                    <img src="{{ asset('images/pen.jpg') }}" alt="">
                     <div class="programme-title">MSc in Professional Accountancy</div>
                 </div>
             </a>
 
             <a href="#" class="programme-link">
                 <div class="programme-box border-lightpurple">
-                    <img src="{{ asset('images/programmes/msc-information-technology.jpg') }}" alt="">
+                    <img src="{{ asset('images/it.jpg') }}" alt="">
                     <div class="programme-title">MSc Information and Technology</div>
                 </div>
             </a>
 
             <a href="#" class="programme-link">
                 <div class="programme-box border-black">
-                    <img src="{{ asset('images/programmes/msc-advanced-computer-science.jpg') }}" alt="">
+                    <img src="{{ asset('images/coding.jpg') }}" alt="">
                     <div class="programme-title">MSc Advanced Computer Science</div>
                 </div>
             </a>
@@ -114,20 +122,34 @@
 <!-- ===== Other ===== -->
 <section class="other-programmes py-5">
     <div class="container">
-        <h2 class="text-center mb-5">Other programmes</h2>
+        <h2 class="text-center mb-5">Other programmes (Sports)</h2>
 
         <div class="programme-grid">
             <a href="#" class="programme-link">
                 <div class="programme-box border-blue">
-                    <img src="{{ asset('images/programmes/gce-a-level.jpg') }}" alt="">
-                    <div class="programme-title">GCE A Level</div>
+                    <img src="{{ asset('images/boxing.jpg') }}" alt="">
+                    <div class="programme-title">Master in Boxing</div>
                 </div>
             </a>
 
             <a href="#" class="programme-link">
                 <div class="programme-box border-purple">
-                    <img src="{{ asset('images/programmes/acca-programme.jpg') }}" alt="">
-                    <div class="programme-title">ACCA Programme</div>
+                    <img src="{{ asset('images/bat.jpg') }}" alt="">
+                    <div class="programme-title">Master in Badminton</div>
+                </div>
+            </a>
+
+            <a href="#" class="programme-link">
+                <div class="programme-box border-blue">
+                    <img src="{{ asset('images/tt.jpg') }}" alt="">
+                    <div class="programme-title">Master in Tabletennis</div>
+                </div>
+            </a>
+
+            <a href="#" class="programme-link">
+                <div class="programme-box border-blue">
+                    <img src="{{ asset('images/bas.jpg') }}" alt="">
+                    <div class="programme-title">Master in Basketball</div>
                 </div>
             </a>
         </div>

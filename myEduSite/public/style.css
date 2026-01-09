@@ -1,0 +1,487 @@
+/* -------------------------------------------------
+   HEADER
+---------------------------------------------------*/
+header {
+    background-color: rgb(245, 195, 203);
+    color: #333;
+    padding: 15px;
+}
+
+/* -------------------------------------------------
+   GLOBAL RESET & TYPOGRAPHY
+---------------------------------------------------*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: #f5f5f5;
+    line-height: 1.4;
+    padding: 20px;
+}
+
+/* -------------------------------------------------
+   CONTACT FORM + MAP SIDE-BY-SIDE
+---------------------------------------------------*/
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 40px;
+    align-items: start;
+}
+
+.form-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(89, 108, 91, 0.1);
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Table inside form */
+.form-table {
+    margin-top: 50px;
+    width: 100%;
+    border-spacing: 50px 15px;
+}
+
+.form-table td {
+    padding: 25px 10px;
+}
+
+.form-table input,
+.form-table select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #c872b2;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.3s ease;
+}
+
+.form-table input:focus,
+.form-table select:focus {
+    border-color: #e764b9;
+    box-shadow: 0 0 0 3px rgba(33,150,243,0.1);
+}
+
+/* Map container */
+.map-box {
+    width: 100%;
+    height: 450px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(236, 174, 213, 0.1);
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, rgb(245, 195, 203), rgb(245, 195, 203));
+    padding: 16px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, #f1cbef, #e392e7);
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .map-box {
+        height: 300px;
+    }
+
+    .form-box {
+        height: 300px;
+    }
+}
+
+/* -------------------------------------------------
+   FOOTER SECTION
+---------------------------------------------------*/
+.main-footer {
+    background-color: rgb(245, 195, 203);
+    color: #1c1a1a;
+    padding: 60px 0;
+}
+
+.footer-sections {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 100px;
+    padding: 0 140px;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 230px;
+}
+
+.footer-column h5 {
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.main-footer ul {
+    list-style: none;
+}
+
+.main-footer ul li {
+    margin-bottom: 8px;
+}
+
+.main-footer ul li a {
+    color: #131010;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.main-footer ul li a:hover {
+    color: #0f0e0e;
+    text-decoration: underline;
+}
+
+/* Social Icons of footer */
+.social-icons {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.social-icons a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: rgba(139, 87, 126, 0.15);
+    color: #1b1616;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 6px;
+    margin-right: 8px;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.social-icons a:hover {
+    background: #f8f2f6;
+    color: #000;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #ffffff33;
+    padding-top: 10px;
+}
+
+/* -------------------------------------------------
+   HOTLINE TABLE SECTION Of CONTACTPAGE
+---------------------------------------------------*/
+/* Make sure body has no margin/padding */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Hotline container full width */
+.hotline-container {
+    width: 96vw;    
+    background-color: rgb(255, 255, 255);
+    border-radius: 0;
+    box-shadow: none;
+    margin-left:-100px;   
+}
+
+/* Title bar */
+.title {
+    background-color: rgb(245, 195, 203);
+    color: white;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;              /* ensure full width */
+}
+
+/* Table full width */
+.hotline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+/* Table header */
+.hotline-table thead {
+    background-color: rgb(245, 195, 203);
+    color: white;
+}
+
+/* Table cells */
+.hotline-table th,
+.hotline-table td {
+    padding: 12px 15px;
+    border-right: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+.hotline-table th:last-child,
+.hotline-table td:last-child {
+    border-right: none;
+}
+
+/* Rows */
+.hotline-table tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.hotline-table tbody tr:hover:not(.section-header) {
+    background-color: #f8f9fa;
+}
+
+/* Section headers */
+.section-header {
+    background-color: rgb(245, 195, 203) !important;
+    color: white;
+    font-weight: bold;
+}
+
+.section-header td {
+    padding: 8px 15px;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+/* -------------------------------------------------
+   ABOUT PAGE SECTION
+---------------------------------------------------*/
+.about-container h1 {
+    font-size: 36px;
+    color: rgb(245, 195, 203);
+    margin-bottom: 25px;
+    border-bottom: 3px solid rgb(245, 195, 203);
+    padding-bottom: 12px;
+}
+
+.about-container p,
+.about-container ul li {
+    font-size: 18px;
+    line-height: 1.8;
+    margin-bottom: 18px;
+    color: #333;
+}
+
+.about-container h2 {
+    font-size: 30px;
+    color: rgb(245, 195, 203);
+    margin-top: 45px;
+    margin-bottom: 20px;
+}
+
+.about-container ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.about-container ul li {
+    padding-left: 26px;
+    position: relative;
+}
+
+.about-container ul li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: rgb(245, 195, 203);
+    font-weight: bold;
+}
+
+
+
+/* 
+courses box */
+.programme-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 🔴 FORCE 4 PER ROW */
+.programme-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* EXACTLY 4 */
+    gap: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .programme-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .programme-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.programme-box {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.programme-box img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.programme-title {
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.programme-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =================================================
+   RESPONSIVE ONLY (NO DESIGN CHANGES)
+================================================= */
+
+/* Large tablets */
+@media (max-width: 1200px) {
+    .footer-sections {
+        padding: 0 60px;
+        gap: 50px;
+    }
+
+    .hotline-container {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+    body {
+        padding: 10px;
+    }
+
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .form-box,
+    .map-box {
+        height: auto;
+    }
+
+    .form-table {
+        margin-top: 20px;
+        border-spacing: 20px 12px;
+    }
+
+    .footer-sections {
+        flex-wrap: wrap;
+        padding: 0 40px;
+        gap: 40px;
+    }
+
+    .footer-column {
+        min-width: 45%;
+    }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    header {
+        text-align: center;
+    }
+
+    .contact-wrapper {
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .form-box {
+        padding: 20px;
+    }
+
+    .form-table {
+        border-spacing: 10px 10px;
+    }
+
+    .form-table td {
+        padding: 15px 5px;
+    }
+
+    .map-box {
+        height: 250px;
+    }
+
+    .submit-btn {
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    .footer-sections {
+        flex-direction: column;
+        padding: 0 20px;
+        gap: 30px;
+    }
+
+    .footer-column {
+        min-width: 100%;
+    }
+
+    .hotline-table th,
+    .hotline-table td {
+        padding: 10px;
+        font-size: 13px;
+    }
+}

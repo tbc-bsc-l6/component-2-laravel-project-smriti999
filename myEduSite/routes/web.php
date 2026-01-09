@@ -40,6 +40,13 @@ Route::middleware(['auth:oldstudent'])
         Route::get('/dashboard', [OldStudentController::class, 'index'])
             ->name('dashboard');
 
+        Route::get('/oldstudent/history', [OldStudentController::class, 'history'])
+    ->name('oldstudent.history');
+Route::post('/admin/students/{id}/convert-old', 
+    [AdminController::class, 'convertToOldStudent']
+)->name('admin.students.convertOld');
+    
+
     });
 
 

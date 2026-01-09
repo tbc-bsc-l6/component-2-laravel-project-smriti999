@@ -2,19 +2,18 @@
 
 @section('content')
 <div class="max-w-5xl mx-auto py-6">
-    <!-- Welcome Message -->
+
     <div class="mb-6 text-gray-700 text-lg">
-        Welcome, <span class="font-semibold">{{ auth()->guard('oldstudent')->user()->name }}</span>!
+        Welcome,
+        <span class="font-semibold">
+            {{ auth()->guard('oldstudent')->user()->name }}
+        </span>!
     </div>
 
-    <!-- Completed Modules Card -->
     <div class="bg-white shadow rounded p-6">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800">Completed Modules & Results</h2>
-
-        @php
-            $oldStudent = auth()->guard('oldstudent')->user();
-            $modules = $oldStudent->completedModules()->get();
-        @endphp
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">
+            Completed Modules History
+        </h2>
 
         @if($modules->count())
             <div class="overflow-x-auto">
@@ -29,11 +28,21 @@
                     <tbody>
                         @foreach($modules as $module)
                             <tr class="hover:bg-gray-50">
-                                <td class="p-3 border">{{ $module->module }}</td>
+                                <td class="p-3 border">
+                                    {{ $module->module }}
+
+                                    @if(!$module->is_available)
+                                        <span class="text-sm text-gray-500">(Archived)</span>
+                                    @endif
+                                </td>
+
                                 <td class="p-3 border font-semibold
-                                    {{ $module->pivot->status === 'passed' ? 'text-green-600' : 'text-red-600' }}">
+                                    {{ $module->pivot->status === 'passed'
+                                        ? 'text-green-600'
+                                        : 'text-red-600' }}">
                                     {{ strtoupper($module->pivot->status) }}
                                 </td>
+
                                 <td class="p-3 border">
                                     {{ $module->pivot->completed_at
                                         ? \Carbon\Carbon::parse($module->pivot->completed_at)->format('d M Y')
@@ -45,8 +54,9 @@
                 </table>
             </div>
         @else
-            <p class="text-gray-600">No completed modules found.</p>
+            <p class="text-gray-600">No history found.</p>
         @endif
     </div>
+
 </div>
 @endsection

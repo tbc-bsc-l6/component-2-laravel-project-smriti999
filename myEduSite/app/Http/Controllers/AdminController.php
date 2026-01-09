@@ -10,7 +10,7 @@ use App\Models\Module;
 use App\Models\Teacher;
 use App\Models\Student;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     /* =========================
@@ -36,6 +36,8 @@ public function changeRolePage()
         return view('admin.changeRole', compact('users', 'roles'));
     }
 
+
+
 public function changeRole(Request $request)
 {
     $request->validate([
@@ -47,98 +49,101 @@ public function changeRole(Request $request)
     $oldRole = optional($user->userRole)->role;
     $newRole = UserRole::findOrFail($request->role_id)->role;
 
-    // Prevent teacher from becoming oldstudent
+    // Prevent teacher → oldstudent
     if ($oldRole === 'teacher' && $newRole === 'oldstudent') {
         return back()->with('error', 'Teacher cannot be changed into Old Student.');
     }
 
-    // Update role in users table
-    $user->user_role_id = $request->role_id;
-    $user->save();
+    DB::transaction(function () use ($user, $request, $oldRole, $newRole) {
 
-    // Remove old role records
-    if ($oldRole === 'teacher' && $user->teacher) {
-        $user->teacher->delete();
-    }
-    if ($oldRole === 'student' && $user->student) {
-        $user->student->delete();
-    }
-    if ($oldRole === 'oldstudent' && $user->oldStudent) {
-        $user->oldStudent->delete();
-    }
+        // Update role
+        $user->user_role_id = $request->role_id;
+        $user->save();
 
-    // Create new role record
-    switch ($newRole) {
-        case 'teacher':
-            if (!$user->teacher) {
-                \App\Models\Teacher::create([
-                    'user_id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
+        /**
+         * STUDENT → OLD STUDENT (MOVE DATA FIRST)
+         */
+        if ($oldRole === 'student' && $newRole === 'oldstudent') {
+
+            $student = $user->student;
+
+            if ($student) {
+
+                // 1️⃣ Create OldStudent
+                $oldStudent = \App\Models\OldStudent::create([
+                    'user_id'  => $user->id,
+                    'name'     => $user->name,
+                    'email'    => $user->email,
                     'password' => $user->password,
-                    'role_id' => $user->user_role_id,
                 ]);
-            }
-            break;
 
-        case 'student':
-            \App\Models\Student::updateOrCreate(
-                ['user_id' => $user->id],
-                [
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'password' => $user->password,
-                ]
-            );
-            break;
-
-        case 'oldstudent':
-
-    // 1️⃣ Create or update OldStudent
-    $oldStudent = \App\Models\OldStudent::updateOrCreate(
-        ['user_id' => $user->id],
-        [
-            'name'     => $user->name,
-            'email'    => $user->email,
-            'password' => $user->password,
-        ]
-    );
-
-    // 2️⃣ Copy passed/failed modules from student → oldstudent
-    if ($user->student) {
-        $modules = $user->student->modules()
-                    ->whereIn('status', ['passed','failed'])
+                // 2️⃣ Move module_student → module_old_student
+                $records = DB::table('module_student')
+                    ->where('student_id', $student->id)
                     ->get();
 
-        foreach ($modules as $module) {
-            $oldStudent->modules()->syncWithoutDetaching([
-                $module->id => [
-                    'status'       => $module->pivot->status,
-                    'enrolled_at'  => $module->pivot->enrolled_at,
-                    'completed_at' => $module->pivot->completed_at,
-                    'created_at'   => now(),
-                    'updated_at'   => now(),
-                ]
+                foreach ($records as $record) {
+                    DB::table('module_old_student')->insert([
+                        'old_student_id' => $oldStudent->id,
+                        'module_id'      => $record->module_id,
+                        'status'         => $record->status,
+                        'enrolled_at'    => $record->enrolled_at ?? null,
+                        'completed_at'   => $record->completed_at,
+                        'created_at'     => now(),
+                        'updated_at'     => now(),
+                    ]);
+                }
+
+                // 3️⃣ Delete from module_student
+                DB::table('module_student')
+                    ->where('student_id', $student->id)
+                    ->delete();
+
+                // 4️⃣ Delete student profile LAST
+                $student->delete();
+            }
+
+            return;
+        }
+
+        /**
+         * REMOVE OLD ROLE RECORDS (NON-STUDENT CASES)
+         */
+        if ($oldRole === 'teacher' && $user->teacher) {
+            $user->teacher->delete();
+        }
+
+        if ($oldRole === 'oldstudent' && $user->oldStudent) {
+            $user->oldStudent->delete();
+        }
+
+        /**
+         * CREATE NEW ROLE RECORDS
+         */
+        if ($newRole === 'teacher') {
+            \App\Models\Teacher::create([
+                'user_id' => $user->id,
+                'name'    => $user->name,
+                'email'   => $user->email,
+                'password'=> $user->password,
+                'role_id' => $user->user_role_id,
             ]);
         }
 
-        // 3️⃣ Delete Student record after copying
-        $user->student->delete();
-    }
+        if ($newRole === 'student') {
+            \App\Models\Student::create([
+                'user_id' => $user->id,
+                'name'    => $user->name,
+                'email'   => $user->email,
+                'password'=> $user->password,
+            ]);
+        }
+    });
 
-break;
-
-
-
-
-
-
-
-
-
-    }
-
-    return back()->with('success', "User role changed from {$oldRole} to {$newRole} successfully.");
+    return back()->with(
+        'success',
+        "User role changed from {$oldRole} to {$newRole} successfully."
+    );
 }
 
 

@@ -11,25 +11,43 @@ class OldStudent extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = ['user_id','name','email','password'];
-    protected $hidden = ['password','remember_token'];
+    protected $fillable = [
+        'user_id',
+        'name',
+        'email',
+        'password'
+    ];
 
-    // Pivot relationship with completed modules
+    protected $hidden = [
+        'password',
+        'remember_token'
+    ];
+
+    /**
+     * All modules linked to this old student (history)
+     */
     public function modules()
     {
         return $this->belongsToMany(
             Module::class,
-            'module_old_student',
-            'old_student_id',
+            'module_old_student', // ✅ correct pivot table
+            'old_student_id',     // ✅ correct FK
             'module_id'
         )
-        ->withPivot(['status','enrolled_at','completed_at'])
+        ->withPivot([
+            'status',
+            'enrolled_at',
+            'completed_at'
+        ])
         ->withTimestamps();
     }
 
-    // Only passed/failed modules
+    /**
+     * Only completed modules (passed / failed)
+     */
     public function completedModules()
     {
-        return $this->modules()->wherePivotIn('status', ['passed', 'failed']);
+        return $this->modules()
+            ->wherePivotIn('status', ['passed', 'failed']);
     }
 }

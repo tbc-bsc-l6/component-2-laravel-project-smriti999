@@ -29,9 +29,6 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-
-
-
 Route::middleware(['auth:oldstudent'])
     ->prefix('old-student')
     ->name('oldstudent.')
@@ -45,8 +42,6 @@ Route::middleware(['auth:oldstudent'])
 Route::post('/admin/students/{id}/convert-old', 
     [AdminController::class, 'convertToOldStudent']
 )->name('admin.students.convertOld');
-    
-
     });
 
 

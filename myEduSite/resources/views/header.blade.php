@@ -2,14 +2,7 @@
     <!-- Load CSS -->
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIY5l3QeYbFZyZ3P5f5c5c5c5c5c5c5c5c5c5c5"
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/>
-
+    
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">

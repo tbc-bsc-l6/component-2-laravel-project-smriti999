@@ -28,7 +28,6 @@
                     </td>
                 </tr>
                 
-
                 <!-- Email & Phone -->
                 <tr>
                     <td>
@@ -55,6 +54,7 @@
                                 <option value="business">Business</option>
                                 <option value="marketing">Marketing</option>
                                 <option value="art">Art</option>
+                                <option value="game">Games</option>
                             </select>
                         </div>
                     </td>
@@ -86,77 +86,93 @@
 
 </div>
 
-  <!-- ============================= -->
-  <!--        HOTLINE TABLE          -->
-  <!-- ============================= -->
-  <div class="container">
+<!-- ============================= -->
+<!--        HOTLINE TABLE          -->
+<!-- ============================= -->
+<div class="container">
     <div class="hotline-container">
-    <h1 class="title">Hotline Numbers</h1>
-    </br>
+        <h1 class="title">Hotline Numbers</h1>
+        </br>
 
-    <table class="hotline-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Designation</th>
-          <th>Phone Number</th>
-        </tr>
-      </thead>
+        <table class="hotline-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
 
-      <tbody>
+            <tbody>
 
-        <!-- FINANCE -->
-        <tr class="section-header"><td colspan="3">FINANCE</td></tr>
-        <tr><td>Ram Raj Thapa</td><td>Deputy Finance Manager</td><td>9749678900</td></tr>
-        <tr><td>Pramish Kafle</td><td>Group Finance Head</td><td>9804803050</td></tr>
-        <tr><td>Prem Dhungel</td><td>Accounts Officer</td><td>9745781111</td></tr>
+                <!-- FINANCE -->
+                <tr class="section-header"><td colspan="3">FINANCE</td></tr>
+                <tr><td>Ram Raj Thapa</td><td>Deputy Finance Manager</td><td>9749678900</td></tr>
+                <tr><td>Pramish Kafle</td><td>Group Finance Head</td><td>9804803050</td></tr>
+                <tr><td>Prem Dhungel</td><td>Accounts Officer</td><td>9745781111</td></tr>
 
-        <!-- IT -->
-        <tr class="section-header"><td colspan="3">IT</td></tr>
-        <tr><td>Shyam KC</td><td>Programme Leader</td><td>9700112233</td></tr>
-        <tr><td>Rani Pandey</td><td>Programme Leader</td><td>9823547609</td></tr>
-        <tr><td>Raju Thakur</td><td>Head of Subject</td><td>9818769955</td></tr>
+                <!-- IT -->
+                <tr class="section-header"><td colspan="3">IT</td></tr>
+                <tr><td>Shyam KC</td><td>Programme Leader</td><td>9700112233</td></tr>
+                <tr><td>Rani Pandey</td><td>Programme Leader</td><td>9823547609</td></tr>
+                <tr><td>Raju Thakur</td><td>Head of Subject</td><td>9818769955</td></tr>
 
-        <!-- Business -->
-        <tr class="section-header"><td colspan="3">Business</td></tr>
-        <tr><td>Sita Tamang</td><td>Programme Leader</td><td>9824567890</td></tr>
-        <tr><td>Sushanti Gole</td><td>Associate Programme Leader</td><td>9714356802</td></tr>
+                <!-- Business -->
+                <tr class="section-header"><td colspan="3">Business</td></tr>
+                <tr><td>Sita Tamang</td><td>Programme Leader</td><td>9824567890</td></tr>
+                <tr><td>Sushanti Gole</td><td>Associate Programme Leader</td><td>9714356802</td></tr>
 
-        <!-- Marketing -->
-        <tr class="section-header"><td colspan="3">Marketing</td></tr>
-        <tr><td>Aynnya Mojha</td><td>Asst. Marketing Manager</td><td>9801234567</td></tr>
-        <tr><td>Anuj Jha</td><td>Head Marketing Manager</td><td>9802345678</td></tr>
+                <!-- Marketing -->
+                <tr class="section-header"><td colspan="3">Marketing</td></tr>
+                <tr><td>Aynnya Mojha</td><td>Asst. Marketing Manager</td><td>9801234567</td></tr>
+                <tr><td>Anuj Jha</td><td>Head Marketing Manager</td><td>9802345678</td></tr>
 
-        <!-- Admissions -->
-        <tr class="section-header"><td colspan="3">Admissions</td></tr>
-        <tr><td>Bikash Sharma</td><td>Head of Admissions</td><td>9836245696</td></tr>
-        <tr><td>nirmal Shah</td><td>Admissions Supervisor</td><td>9825459685</td></tr>
-        <tr><td>Bimala Gole</td><td>Senior Incharge</td><td>9803254569</td></tr>
-        <tr><td>Tyla Limbu</td><td>Admissions Counsellor</td><td>9849458525</td></tr>
+                <!-- Admissions -->
+                <tr class="section-header"><td colspan="3">Admissions</td></tr>
+                <tr><td>Bikash Sharma</td><td>Head of Admissions</td><td>9836245696</td></tr>
+                <tr><td>nirmal Shah</td><td>Admissions Supervisor</td><td>9825459685</td></tr>
+                <tr><td>Bimala Gole</td><td>Senior Incharge</td><td>9803254569</td></tr>
+                <tr><td>Tyla Limbu</td><td>Admissions Counsellor</td><td>9849458525</td></tr>
 
-        <!-- SEO -->
-        <tr class="section-header"><td colspan="3">SEO</td></tr>
-        <tr><td>Pramila Shrestha</td><td>SEO Manager</td><td>9802345678</td></tr>
-        <tr><td>Guru Dev</td><td>SEO Officer</td><td>9809876543</td></tr>
+                <!-- SEO -->
+                <tr class="section-header"><td colspan="3">SEO</td></tr>
+                <tr><td>Pramila Shrestha</td><td>SEO Manager</td><td>9802345678</td></tr>
+                <tr><td>Guru Dev</td><td>SEO Officer</td><td>9809876543</td></tr>
 
-        <!-- Butwal IT -->
-        <tr class="section-header"><td colspan="3">Butwal Unit, IT</td></tr>
-        <tr><td>Paarson Sharma</td><td>Head of College</td><td>+01 3333333</td></tr>
+                <!-- Butwal IT -->
+                <tr class="section-header"><td colspan="3">Butwal Unit, IT</td></tr>
+                <tr><td>Paarson Sharma</td><td>Head of College</td><td>+01 3333333</td></tr>
 
-        <!-- Kavre IT -->
-        <tr class="section-header"><td colspan="3">Kavre Unit, IT</td></tr>
-        <tr><td>Don Chaudary</td><td>Head of College</td><td>+01 2222222</td></tr>
+                <!-- Kavre IT -->
+                <tr class="section-header"><td colspan="3">Kavre Unit, IT</td></tr>
+                <tr><td>Don Chaudary</td><td>Head of College</td><td>+01 2222222</td></tr>
 
-        <!-- Jhapa -->
-        <tr class="section-header"><td colspan="3">Jhapa Unit, IT</td></tr>
-        <tr><td>Laxman Magar</td><td>Head of College</td><td>+01 7777777</td></tr>
+                <!-- Jhapa -->
+                <tr class="section-header"><td colspan="3">Jhapa Unit, IT</td></tr>
+                <tr><td>Laxman Magar</td><td>Head of College</td><td>+01 7777777</td></tr>
 
-      </tbody>
-    </table>
-</br></br></br>
+            </tbody>
+        </table>
+
+        </br></br></br>
+    </div>
 </div>
-  </div>
 
-</div>
+<!-- ============================= -->
+<!--      THANK YOU POPUP JS       -->
+<!-- ============================= -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("contactForm");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            alert("Thank you! Your form has been submitted successfully.");
+
+            form.reset();
+        });
+    });
+</script>
 
 @endsection

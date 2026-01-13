@@ -78,4 +78,15 @@ class ModuleController extends Controller
         $status = $module->is_available ? 'available' : 'unavailable';
         return back()->with('success', "Module '{$module->module}' is now {$status}.");
     }
+//for API
+    public function searchModules(Request $request)
+    {
+        $query = $request->input('q', ''); // Get search query
+
+        // Fetch modules containing the search query
+        $modules = Module::where('module', 'LIKE', "%{$query}%")->get();
+
+        // Return JSON response
+        return response()->json($modules);
+    }
 }

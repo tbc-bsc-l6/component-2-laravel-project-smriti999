@@ -23,14 +23,16 @@ class Student extends Authenticatable
         'password',
         'remember_token',
     ];
+   
+    //module student
+    public function modules()
+        {
+            return $this->belongsToMany(Module::class, 'module_student', 'student_id', 'module_id')
+                        ->withPivot('status', 'enrolled_at', 'completed_at')
+                        ->withTimestamps();
+        }
 
-  public function modules()
-    {
-        return $this->belongsToMany(Module::class, 'module_student', 'student_id', 'module_id')
-                    ->withPivot('status', 'enrolled_at', 'completed_at')
-                    ->withTimestamps();
-    }
-
+    //to convert while oldstudent
     public function oldModules()
     {
         return $this->belongsToMany(
@@ -42,6 +44,8 @@ class Student extends Authenticatable
         ->withPivot('status', 'enrolled_at', 'completed_at')
         ->withTimestamps();
     }
+
+    //register in user also
     public function user()
     {
         return $this->belongsTo(User::class);

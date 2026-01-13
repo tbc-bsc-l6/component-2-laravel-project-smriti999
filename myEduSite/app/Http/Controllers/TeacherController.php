@@ -10,6 +10,7 @@ use App\Models\Student;
 
 class TeacherController extends Controller
 {
+    //check role and show dashboard
     public function modules()
     {
         $teacher = auth()->user(); // logged in teacher
@@ -18,24 +19,20 @@ class TeacherController extends Controller
         return view('teacher.dashboard', compact('modules'));
     }
 
-public function updateStudentStatus($moduleId, $studentId, Request $request)
-{
-    $module = Module::findOrFail($moduleId);
-    $student = Student::findOrFail($studentId);
+    public function updateStudentStatus($moduleId, $studentId, Request $request)
+    {
+        $module = Module::findOrFail($moduleId);
+        $student = Student::findOrFail($studentId);
 
-    // Convert button value to DB value
-    $newStatus = $request->status === 'pass' ? 'passed' : 'failed';
+        // Convert value to DB value
+        $newStatus = $request->status === 'pass' ? 'passed' : 'failed';
 
-    // ⭐ THIS IS THE FIX
-    $module->students()->updateExistingPivot($student->id, [
-        'status'       => $newStatus,
-        'completed_at' => now(),   // ← VERY IMPORTANT
-        'updated_at'   => now(),
-    ]);
+        $module->students()->updateExistingPivot($student->id, [
+            'status'       => $newStatus,
+            'completed_at' => now(),   
+            'updated_at'   => now(),
+        ]);
 
-    return back()->with('success', 'Student status updated successfully!');
-}
-
-
-
+        return back()->with('success', 'Student status updated successfully!');
+    }
 }

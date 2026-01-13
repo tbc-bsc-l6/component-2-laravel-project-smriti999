@@ -67,9 +67,7 @@ class ModuleController extends Controller
                          ->with('success', 'Module deleted successfully!');
     }
     
-    /* =========================
-       TOGGLE MODULE AVAILABILITY
-    ========================== */
+    //toggle module that available or nuavailable
    public function toggleModuleAvailability(Module $module)
     {
         $module->is_available = !$module->is_available;
@@ -78,7 +76,7 @@ class ModuleController extends Controller
         $status = $module->is_available ? 'available' : 'unavailable';
         return back()->with('success', "Module '{$module->module}' is now {$status}.");
     }
-//for API
+    //for API searching the module
     public function searchModules(Request $request)
     {
         $query = $request->input('q', ''); // Get search query

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TeacherMiddleware
 {
+    //check teacher or not
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::guard('teacher')->check()) {
